@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import { DirectionProvider } from '@/components/providers/direction-provider';
-import './globals.css';
 import { BaseLayout } from '@/components/layout/base-layout';
+import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+const iranYekanFont = localFont({
+  src: [
+    { path: '../public/fonts/IRANYekanXFaNum-Bold.woff', weight: '700' },
+    { path: '../public/fonts/IRANYekanXFaNum-Bold.woff2', weight: '700' },
+    { path: '../public/fonts/IRANYekanXFaNum-Regular.woff', weight: '400' },
+    { path: '../public/fonts/IRANYekanXFaNum-Regular.woff2', weight: '400' },
+  ],
+  variable: '--font-iran-yekan',
 });
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${iranYekanFont.variable} ${iranYekanFont.className} antialiased`}
       >
         <DirectionProvider>
           <BaseLayout>{children}</BaseLayout>
