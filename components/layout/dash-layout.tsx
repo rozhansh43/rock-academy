@@ -46,14 +46,16 @@ const DashLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
     {
       icon: (
         <EventsMenuIcon
+          width={34}
+          height={34}
           className={cn(
-            'fill-zinc-400',
+            'stroke-zinc-400',
             isActive('/events') && 'fill-purple-500',
           )}
         />
       ),
-      width: 28,
-      height: 28,
+      width: 34,
+      height: 34,
       label: 'رویدادها',
       href: '/events',
     },
@@ -82,8 +84,8 @@ const DashLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
       <nav className="fixed bottom-9.5 flex h-19 w-[calc(100%-32px)] max-w-[calc(var(--container-md)-32px)] -translate-x-4 flex-row justify-center gap-10 rounded-full bg-linear-22 bg-gradient-to-tr from-white/70 from-[14%] to-purple-100/70 to-[86%] px-1.5 shadow-[0px_1px_3px_0px] shadow-black/25">
         <div className="relative flex flex-row items-center justify-center gap-10">
           <motion.div
-            initial={{ right: -12.5 + (48 + 40) * (index + 0) }}
-            animate={{ right: -12.5 + (48 + 40) * (index + 0) }}
+            initial={{ right: -13.5 + (48 + 40) * (index + 0) }}
+            animate={{ right: -13.5 + (48 + 40) * (index + 0) }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="absolute -top-9 flex size-[75px] items-center justify-center rounded-full border-[0.3px] border-white bg-orange-50/10 backdrop-blur-xs"
           >
@@ -99,12 +101,14 @@ const DashLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
                 initial={{ y: 0 }}
                 animate={{ y: isActive(item.href) ? -26 : 0 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
+                style={{ width: item.width, height: item.height }}
+                className="flex min-h-9 min-w-9 items-center justify-center"
               >
                 {item.icon}
               </motion.div>
               <span
                 className={cn(
-                  'text-[13px] text-zinc-400',
+                  'text-sm font-medium text-zinc-400',
                   pathname === item.href && 'text-purple-500',
                 )}
               >
