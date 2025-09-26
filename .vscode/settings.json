@@ -14,10 +14,15 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "tailwindCSS.classFunctions": ["tw", "clsx", "tw\\.[a-z-]+", "cn", "cva"],
+  "tailwindCSS.experimental.configFile": {
+    "app/globals.css": "*/**"
+  },
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ],
+
   "workbench.colorCustomizations": {
     "activityBar.background": "#ea580c",
     "titleBar.activeBackground": "#ea580c",
