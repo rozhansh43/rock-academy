@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { cn } from '@/utils/cn';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { convertToEnglishNumbers } from '@/utils/numbers';
+import {
+  NumericFormat,
+  NumericFormatProps,
+  PatternFormat,
+  PatternFormatProps,
+} from 'react-number-format';
 
 // Define input size variants
 const inputVariants = cva(
@@ -17,8 +24,8 @@ const inputVariants = cva(
     variants: {
       variant: {
         lg: 'h-12.5 px-4 text-sm rounded-2xl file:pe-4 file:me-4',
-        md: 'h-8.5 px-3 text-[0.8125rem] leading-(--text-sm--line-height) rounded-md file:pe-3 file:me-3',
-        sm: 'h-7 px-2.5 text-xs rounded-md file:pe-2.5 file:me-2.5',
+        md: 'h-8.5 px-3 text-[0.8125rem] leading-(--text-sm--line-height) rounded-2xl file:pe-3 file:me-3',
+        sm: 'h-7 px-2.5 text-xs rounded-2xl file:pe-2.5 file:me-2.5',
       },
     },
     defaultVariants: {
@@ -32,9 +39,9 @@ const inputAddonVariants = cva(
   {
     variants: {
       variant: {
-        sm: 'rounded-md h-7 min-w-7 text-xs px-2.5 [&_svg:not([class*=size-])]:size-3.5',
-        md: 'rounded-md h-8.5 min-w-8.5 px-3 text-[0.8125rem] leading-(--text-sm--line-height) [&_svg:not([class*=size-])]:size-4.5',
-        lg: 'rounded-md h-10 min-w-10 px-4 text-sm [&_svg:not([class*=size-])]:size-4.5',
+        sm: 'rounded-2xl h-7 min-w-7 text-xs px-2.5 [&_svg:not([class*=size-])]:size-3.5',
+        md: 'rounded-2xl h-8.5 min-w-8.5 px-3 text-[0.8125rem] leading-(--text-sm--line-height) [&_svg:not([class*=size-])]:size-4.5',
+        lg: 'rounded-2xl h-10 min-w-10 px-4 text-sm [&_svg:not([class*=size-])]:size-4.5',
       },
       mode: {
         default: '',
@@ -121,20 +128,45 @@ const inputWrapperVariants = cva(
   },
 );
 
+type InputProps = React.ComponentProps<'input'> &
+  VariantProps<typeof inputVariants>;
 function Input({
+  onChange,
   className,
   type,
   variant,
   ...props
 }: React.ComponentProps<'input'> & VariantProps<typeof inputVariants>) {
+  const handleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const convertedValue = convertToEnglishNumbers(e.target.value);
+      if (convertedValue !== e.target.value) {
+        e.target.value = convertedValue;
+      }
+      onChange?.(e);
+    },
+    [onChange],
+  );
+
   return (
     <input
       data-slot="input"
       type={type}
       className={cn(inputVariants({ variant }), className)}
+      onChange={handleChange}
       {...props}
     />
   );
+}
+
+function InputPattern({ ...props }: InputProps & PatternFormatProps) {
+  return (
+    <PatternFormat customInput={Input} getInputRef={props.ref} {...props} />
+  );
+}
+
+function InputNumber(props: InputProps & NumericFormatProps) {
+  return <NumericFormat customInput={Input} {...props} />;
 }
 
 function InputAddon({
@@ -185,6 +217,8 @@ function InputWrapper({
 
 export {
   Input,
+  InputPattern,
+  InputNumber,
   InputAddon,
   InputGroup,
   InputWrapper,

@@ -10,7 +10,7 @@ import { HomeIcon } from '../icons/home-icon';
 import { EventsMenuIcon } from '../icons/events-menu-icon';
 import { MoneyBagIcon } from '../icons/money-bag-icon';
 
-const DashLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
+const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
 
@@ -78,7 +78,7 @@ const DashLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     // bg-linear-[8.12deg,_#FFF7ED_53.7%,_#FAE8FF_97.64%]
-    <div className="mx-auto size-full max-w-md bg-linear-8 bg-gradient-to-t from-orange-50 from-[53.7%] to-purple-100 to-[97.64%] pb-40">
+    <div className="size-full bg-linear-8 bg-gradient-to-t from-orange-50 from-[53.7%] to-purple-100 to-[97.64%] pb-40">
       {children}
       {/* bg-linear-[21.62deg,_rgba(255,_255,_255,_0.7)_14%,_rgba(250,_232,_255,_0.7)_86%] */}
       <nav className="fixed bottom-9.5 flex h-19 w-[calc(100%-32px)] max-w-[calc(var(--container-md)-32px)] -translate-x-4 flex-row justify-center gap-10 rounded-full bg-linear-22 bg-gradient-to-tr from-white/70 from-[14%] to-purple-100/70 to-[86%] px-1.5 shadow-[0px_1px_3px_0px] shadow-black/25">
@@ -122,4 +122,4 @@ const DashLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-export { DashLayout };
+export { DashboardLayout };

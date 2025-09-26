@@ -1,10 +1,9 @@
 'use client';
 
 import { FC } from 'react';
-import { DashLayout } from './dash-layout';
 
 const BaseLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <DashLayout>{children}</DashLayout>;
+  return <div className="mx-auto size-full max-w-md">{children}</div>;
 };
 
 export { BaseLayout };
