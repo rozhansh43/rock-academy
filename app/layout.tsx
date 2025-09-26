@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import { DirectionProvider } from '@/components/providers/direction-provider';
 import { BaseLayout } from '@/components/layout/base-layout';
 import './globals.css';
+import { QueryProvider } from '@/components/providers/query-provider';
 
 const iranYekanFont = localFont({
   src: [
@@ -28,9 +29,11 @@ export default function RootLayout({
       <body
         className={`${iranYekanFont.variable} ${iranYekanFont.className} antialiased`}
       >
-        <DirectionProvider>
-          <BaseLayout>{children}</BaseLayout>
-        </DirectionProvider>
+        <QueryProvider>
+          <DirectionProvider>
+            <BaseLayout>{children}</BaseLayout>
+          </DirectionProvider>
+        </QueryProvider>
       </body>
     </html>
   );
