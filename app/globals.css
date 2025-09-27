@@ -187,6 +187,9 @@
   .container-main {
     @apply container mx-auto px-4;
   }
+  .dash-gradient {
+    @apply bg-linear-8 bg-gradient-to-t from-orange-50 from-[53.7%] to-purple-100 to-[97.64%];
+  }
 }
 
 /** Smooth scroll **/
