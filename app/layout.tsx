@@ -4,6 +4,7 @@ import { DirectionProvider } from '@/components/providers/direction-provider';
 import { BaseLayout } from '@/components/layout/base-layout';
 import './globals.css';
 import { QueryProvider } from '@/components/providers/query-provider';
+import { AuthProvider } from '@/components/providers/auth-provider';
 
 const iranYekanFont = localFont({
   src: [
@@ -31,7 +32,9 @@ export default function RootLayout({
       >
         <QueryProvider>
           <DirectionProvider>
-            <BaseLayout>{children}</BaseLayout>
+            <BaseLayout>
+              <AuthProvider>{children}</AuthProvider>
+            </BaseLayout>
           </DirectionProvider>
         </QueryProvider>
       </body>

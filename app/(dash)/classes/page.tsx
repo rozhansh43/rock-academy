@@ -2,7 +2,6 @@
 import { Button } from '@/components/ui/button';
 import { Input, InputWrapper } from '@/components/ui/input';
 import { MenuIcon, SearchIcon, SortAscIcon, SortDescIcon } from 'lucide-react';
-import { ProfileIcon } from '@/components/icons/profile-icon';
 import { useQuery } from '@tanstack/react-query';
 import { apiCaller } from '@/apis/api-caller';
 import { weekdaysToFa } from '@/utils/strings';
@@ -15,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
+import { ProfileDialog } from '@/components/shared/profile-dialog';
 
 export default function Page() {
   const [sort, setSort] = useState<string>('');
@@ -36,9 +36,7 @@ export default function Page() {
           />
         </InputWrapper>
 
-        <Button variant="dim" mode="icon">
-          <ProfileIcon className="size-6 stroke-zinc-500" />
-        </Button>
+        <ProfileDialog />
         <Button variant="dim" mode="icon">
           <MenuIcon className="size-6 stroke-zinc-500" />
         </Button>

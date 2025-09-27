@@ -16,3 +16,12 @@ export const weekdaysToFa = (weekdays: number[] | null | undefined) => {
     })
     .join('، ');
 };
+
+export const isJsonString = (value: string): boolean => {
+  try {
+    JSON.parse(value);
+  } catch {
+    return false;
+  }
+  return true;
+};

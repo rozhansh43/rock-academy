@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { LOGIN_STEPS } from '../page';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiCaller } from '@/apis/api-caller';
 import {
   InputOTP,
@@ -20,6 +20,9 @@ import {
 } from '@/components/ui/input-otp';
 import { ArrowLeftIcon, LoaderCircleIcon } from 'lucide-react';
 import { SendOTPIn } from '@/apis';
+import { setCookie } from '@/utils/cookies';
+import { COOKIE_KEYS } from '@/utils/cookies';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   code: z.string().min(1, { message: 'کد الزامی است' }),
@@ -32,12 +35,22 @@ export const OtpStep: FC<{
   sendData: any;
   setSendData: Dispatch<SetStateAction<any>>;
 }> = ({ setStep, phoneNumber, sendData, setSendData }) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
-    mutationFn: (data: FormType) => {
+    mutationFn: (
+      data: FormType,
+    ): Promise<{ data: { tokens: { access: string } } }> => {
       return apiCaller.auth.otp.verify.post({
         ...data,
         phone: phoneNumber,
-      });
+      }) as any;
+    },
+    onSuccess: (data: { data: { tokens: { access: string } } }) => {
+      setCookie(COOKIE_KEYS.ACCESS_TOKEN, data?.data?.tokens?.access);
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      router.push('/');
     },
   });
 
@@ -104,6 +117,7 @@ export const OtpStep: FC<{
         })}
       >
         <Button
+          type="button"
           className="absolute left-0"
           variant="outline"
           size="icon"
