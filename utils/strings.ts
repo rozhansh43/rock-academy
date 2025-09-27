@@ -25,3 +25,8 @@ export const isJsonString = (value: string): boolean => {
   }
   return true;
 };
+
+export const formatPrice = (price: number | string | null | undefined) => {
+  if (!price) return '';
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};

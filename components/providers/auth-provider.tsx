@@ -7,6 +7,8 @@ import { apiCaller } from '@/apis/api-caller';
 import { ApiError } from '@/apis';
 import Image from 'next/image';
 import { Button } from '../ui/button';
+import { removeCookie } from '@/utils/cookies';
+import { COOKIE_KEYS } from '@/utils/cookies';
 
 const authRoutes = ['/login'];
 
@@ -34,7 +36,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useLayoutEffect(() => {
     if (isWaiting) return;
-    if (!isAuthenticated && !authRoutes.includes(pathname)) {
+    if (!isAuthenticated) {
+      removeCookie(COOKIE_KEYS.ACCESS_TOKEN);
       router.push('/login');
     } else if (isAuthenticated && authRoutes.includes(pathname)) {
       router.push('/');
@@ -48,25 +51,25 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       </div>
     );
 
-  if (isAuthenticated && query.isError)
-    return (
-      <div className="dash-gradient flex size-full flex-col items-center justify-center gap-3">
-        <div className="text-dark-1 text-lg font-semibold">
-          مشکلی بوجود آمده است!
-        </div>
-        <div className="text-dark-2 text-base">
-          لطفا وضعیت اینترنت خود را بررسی کنید <br /> و یا چند دقیقه دیگر مجدد
-          تلاش کنید.
-        </div>
-        <Button
-          size="lg"
-          className="mt-3"
-          onClick={() => window.location.reload()}
-        >
-          تلاش مجدد
-        </Button>
-      </div>
-    );
+  // if (isAuthenticated && query.isError)
+  //   return (
+  //     <div className="dash-gradient flex size-full flex-col items-center justify-center gap-3">
+  //       <div className="text-dark-1 text-lg font-semibold">
+  //         مشکلی بوجود آمده است!
+  //       </div>
+  //       <div className="text-dark-2 text-base">
+  //         لطفا وضعیت اینترنت خود را بررسی کنید <br /> و یا چند دقیقه دیگر مجدد
+  //         تلاش کنید.
+  //       </div>
+  //       <Button
+  //         size="lg"
+  //         className="mt-3"
+  //         onClick={() => window.location.reload()}
+  //       >
+  //         تلاش مجدد
+  //       </Button>
+  //     </div>
+  //   );
 
   return <>{children}</>;
 };

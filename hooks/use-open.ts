@@ -1,7 +1,7 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { useQueryParam } from './use-query-param';
 
 interface UseOpenOptions {
   /**
@@ -19,38 +19,23 @@ interface UseOpenOptions {
 export const useOpen = (options: UseOpenOptions = {}) => {
   const { paramName = 'open', openValue = 'true' } = options;
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const queryParam = useQueryParam();
 
-  const isOpen = searchParams.get(paramName) === openValue;
+  const isOpen = queryParam.get(paramName) === openValue;
 
-  const open = useCallback(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(paramName, openValue);
-    router.push(`?${params.toString()}`, { scroll: false });
-  }, [router, searchParams, paramName, openValue]);
+  const open = () => {
+    queryParam.set(paramName, openValue);
+    // router.push(`?${queryParam.params}`, { scroll: false });
+  };
 
-  const close = useCallback(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete(paramName);
-    const queryString = params.toString();
-    router.push(queryString ? `?${queryString}` : window.location.pathname, {
-      scroll: false,
-    });
-  }, [router, searchParams, paramName]);
-
-  const toggle = useCallback(() => {
-    if (isOpen) {
-      close();
-    } else {
-      open();
-    }
-  }, [isOpen, open, close]);
+  const close = () => {
+    queryParam.remove(paramName);
+    // router.push(`?${queryParam.params}`, { scroll: false });
+  };
 
   return {
     isOpen,
     open,
     close,
-    toggle,
   };
 };

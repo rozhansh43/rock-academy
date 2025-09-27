@@ -108,13 +108,15 @@ export const OtpStep: FC<{
 
   const formatTime = (seconds: number) => seconds + ' ثانیه';
 
+  const onSubmit = (values: FormType) => {
+    mutation.mutate(values);
+  };
+
   return (
     <Form {...form}>
       <form
         className="relative flex size-full flex-col items-center gap-3 text-center"
-        onSubmit={form.handleSubmit((values) => {
-          mutation.mutate(values);
-        })}
+        onSubmit={form.handleSubmit(onSubmit)}
       >
         <Button
           type="button"
@@ -135,10 +137,19 @@ export const OtpStep: FC<{
           <FormField
             control={form.control}
             name="code"
-            render={({ field: { ...field } }) => (
+            render={({ field: { onChange, ...field } }) => (
               <FormItem className="mt-5">
                 <FormControl>
-                  <InputOTP maxLength={5} {...field}>
+                  <InputOTP
+                    maxLength={5}
+                    {...field}
+                    onChange={(val) => {
+                      onChange(val);
+                      if (val.length === 5) {
+                        form.handleSubmit(onSubmit)();
+                      }
+                    }}
+                  >
                     <InputOTPGroup>
                       <InputOTPSlot index={0} />
                       <InputOTPSlot index={1} />
