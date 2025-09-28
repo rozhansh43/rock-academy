@@ -25,6 +25,16 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = (query.error as ApiError)?.status !== 401;
 
   useLayoutEffect(() => {
+    if (query.isLoading || query.isFetching) return;
+    if (!isAuthenticated) {
+      removeCookie(COOKIE_KEYS.ACCESS_TOKEN);
+      router.push('/login');
+    } else if (isAuthenticated && authRoutes.includes(pathname)) {
+      router.push('/');
+    }
+  }, [isAuthenticated, query.isLoading, query.isFetching]);
+
+  useLayoutEffect(() => {
     if (!query.isLoading && !query.isFetching) {
       setTimeout(() => {
         setIsWaiting(false);
@@ -33,16 +43,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsWaiting(true);
     }
   }, [query.isLoading, query.isFetching]);
-
-  useLayoutEffect(() => {
-    if (isWaiting) return;
-    if (!isAuthenticated) {
-      removeCookie(COOKIE_KEYS.ACCESS_TOKEN);
-      router.push('/login');
-    } else if (isAuthenticated && authRoutes.includes(pathname)) {
-      router.push('/');
-    }
-  }, [isAuthenticated, isWaiting]);
 
   if (isWaiting)
     return (
