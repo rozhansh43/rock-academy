@@ -46,30 +46,30 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   if (isWaiting)
     return (
-      <div className="flex size-full items-center justify-center">
+      <div className="flex size-full items-center justify-center bg-linear-8 bg-gradient-to-t from-orange-100 from-[53.7%] to-orange-200 to-[97.64%]">
         <Image src="/images/logo.png" alt="logo" width={93.4} height={68.6} />
       </div>
     );
 
-  // if (isAuthenticated && query.isError)
-  //   return (
-  //     <div className="dash-gradient flex size-full flex-col items-center justify-center gap-3">
-  //       <div className="text-dark-1 text-lg font-semibold">
-  //         مشکلی بوجود آمده است!
-  //       </div>
-  //       <div className="text-dark-2 text-base">
-  //         لطفا وضعیت اینترنت خود را بررسی کنید <br /> و یا چند دقیقه دیگر مجدد
-  //         تلاش کنید.
-  //       </div>
-  //       <Button
-  //         size="lg"
-  //         className="mt-3"
-  //         onClick={() => window.location.reload()}
-  //       >
-  //         تلاش مجدد
-  //       </Button>
-  //     </div>
-  //   );
+  if (isAuthenticated && query.isError)
+    return (
+      <div className="flex size-full flex-col items-center justify-center gap-3 bg-linear-8 bg-gradient-to-t from-orange-100 from-[53.7%] to-orange-200 to-[97.64%]">
+        <div className="text-dark-1 text-lg font-semibold">
+          مشکلی بوجود آمده است!
+        </div>
+        <div className="text-dark-2 text-base">
+          لطفا وضعیت اینترنت خود را بررسی کنید <br /> و یا چند دقیقه دیگر مجدد
+          تلاش کنید.
+        </div>
+        <Button
+          size="lg"
+          className="mt-3"
+          onClick={() => window.location.reload()}
+        >
+          تلاش مجدد
+        </Button>
+      </div>
+    );
 
   return <>{children}</>;
 };
