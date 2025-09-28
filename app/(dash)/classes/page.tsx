@@ -17,12 +17,11 @@ import { useState } from 'react';
 import { ProfileDialog } from '@/components/shared/profile-dialog';
 import { ClassDetailDialog } from './_components/class-detail-dialog';
 import { useOpen } from '@/hooks/use-open';
-import { useQueryParam } from '@/hooks/use-query-param';
+import { useQueryState } from 'nuqs';
 
 export default function Page() {
   const [sort, setSort] = useState<string>('');
-  const queryParam = useQueryParam();
-  const [id, setId] = useState<string>('');
+  const [, setId] = useQueryState('id');
 
   const query = useQuery({
     queryKey: ['classes'],
@@ -30,10 +29,7 @@ export default function Page() {
   });
   const data = (query.data as any)?.data as typeof query.data;
 
-  const { open } = useOpen({
-    paramName: 'class-detail-dialog',
-    openValue: 'open',
-  });
+  const detailDialog = useOpen('class-detail');
 
   return (
     <>
@@ -116,10 +112,8 @@ export default function Page() {
                       size="sm"
                       variant="outline"
                       onClick={() => {
-                        // TODO: not working
-                        queryParam.set('id', item.id?.toString() ?? '');
                         setId(item.id?.toString() ?? '');
-                        open();
+                        detailDialog.open();
                       }}
                     >
                       اطلاعات بیشتر
@@ -135,7 +129,7 @@ export default function Page() {
           )}
         </div>
       </div>
-      <ClassDetailDialog id={id} />
+      <ClassDetailDialog />
     </>
   );
 }

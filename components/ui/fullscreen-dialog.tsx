@@ -17,12 +17,8 @@ interface FullscreenDialogProps {
    * The search parameter name to use for the dialog state
    * @default 'dialog'
    */
-  paramName?: string;
-  /**
-   * The value to set when opening
-   * @default 'open'
-   */
-  openValue?: string;
+  id: string;
+
   /**
    * Children to render inside the dialog
    */
@@ -45,26 +41,39 @@ interface FullscreenDialogProps {
    * Additional className to pass to the DialogContent
    */
   className?: string;
+  /**
+   * Function to call when the dialog is closed
+   */
+  onClose?: () => void;
 }
 
 export function FullscreenDialog({
-  paramName = 'dialog',
-  openValue = 'open',
+  id,
   children,
   contentProps,
   showCloseButton = true,
   overlay = true,
   className,
+  onClose,
 }: FullscreenDialogProps) {
-  const { isOpen, close } = useOpen({ paramName, openValue });
+  const { isOpen, close } = useOpen(id, 'dialog');
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose?.();
+          close();
+        }
+      }}
+    >
       <DialogContent
         variant="fullscreen"
         showCloseButton={showCloseButton}
         overlay={overlay}
         className={className}
+        onClose={close}
         {...contentProps}
       >
         {children}

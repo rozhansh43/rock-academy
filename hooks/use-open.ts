@@ -1,36 +1,26 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useQueryParam } from './use-query-param';
+import { UseQueryStateOptions, useQueryState } from 'nuqs';
 
-interface UseOpenOptions {
-  /**
-   * The search parameter name to use for the open state
-   * @default 'open'
-   */
-  paramName?: string;
-  /**
-   * The value to set when opening
-   * @default 'true'
-   */
-  openValue?: string;
-}
+export const useOpen = (
+  id: string,
+  comp = 'dialog',
+  queryStateOptions?: UseQueryStateOptions<string>,
+) => {
+  const compId = `${comp}-${id}`;
+  const [queryParam, setQueryParam] = useQueryState(compId, {
+    history: 'push',
+    ...queryStateOptions,
+  });
 
-export const useOpen = (options: UseOpenOptions = {}) => {
-  const { paramName = 'open', openValue = 'true' } = options;
-
-  const queryParam = useQueryParam();
-
-  const isOpen = queryParam.get(paramName) === openValue;
+  const isOpen = queryParam === 'open';
 
   const open = () => {
-    queryParam.set(paramName, openValue);
-    // router.push(`?${queryParam.params}`, { scroll: false });
+    setQueryParam('open');
   };
 
   const close = () => {
-    queryParam.remove(paramName);
-    // router.push(`?${queryParam.params}`, { scroll: false });
+    setQueryParam(null, { history: 'replace' });
   };
 
   return {

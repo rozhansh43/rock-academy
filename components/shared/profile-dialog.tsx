@@ -30,10 +30,8 @@ const formSchema = z.object({
 type FormType = z.infer<typeof formSchema>;
 
 export const ProfileDialog = () => {
-  const { open, close } = useOpen({
-    paramName: 'profile-dialog',
-    openValue: 'open',
-  });
+  const { open, close } = useOpen('profile');
+
   const queryClient = useQueryClient();
   const profileData = queryClient.getQueryData<{ data: MeProfile }>([
     'profile',
@@ -78,11 +76,7 @@ export const ProfileDialog = () => {
       <Button variant="dim" mode="icon" onClick={() => open()} type="button">
         <ProfileIcon className="size-6 stroke-zinc-500" />
       </Button>
-      <FullscreenDialog
-        paramName="profile-dialog"
-        openValue="open"
-        className="dash-gradient"
-      >
+      <FullscreenDialog id="profile" className="dash-gradient">
         <FullscreenDialog.Header>
           <FullscreenDialog.Title className="text-dark-2 text-center">
             حساب کاربری

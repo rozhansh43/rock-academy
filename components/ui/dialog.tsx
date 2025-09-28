@@ -14,7 +14,8 @@ const dialogContentVariants = cva(
       variant: {
         default:
           'left-[50%] top-[50%] max-w-lg translate-x-[-50%] translate-y-[-50%] w-full',
-        fullscreen: 'left-[50%] max-w-md translate-x-[-50%] top-0 size-full',
+        fullscreen:
+          'left-[50%] max-w-md translate-x-[-50%] top-0 size-full rounded-none!',
       },
     },
     defaultVariants: {
@@ -69,11 +70,13 @@ function DialogContent({
   showCloseButton = true,
   overlay = true,
   variant,
+  onClose,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> &
   VariantProps<typeof dialogContentVariants> & {
     showCloseButton?: boolean;
     overlay?: boolean;
+    onClose?: () => void;
   }) {
   return (
     <DialogPortal>
@@ -94,6 +97,9 @@ function DialogContent({
               mode="icon"
               size="sm"
               className="rounded-full"
+              onClick={() => {
+                onClose?.();
+              }}
             >
               <ArrowLeftIcon className="text-dark-1 size-5" />
             </Button>

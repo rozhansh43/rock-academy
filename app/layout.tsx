@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { DirectionProvider } from '@/components/providers/direction-provider';
 import { BaseLayout } from '@/components/layout/base-layout';
 import './globals.css';
@@ -30,13 +31,15 @@ export default function RootLayout({
       <body
         className={`${iranYekanFont.variable} ${iranYekanFont.className} antialiased`}
       >
-        <QueryProvider>
-          <DirectionProvider>
-            <BaseLayout>
-              <AuthProvider>{children}</AuthProvider>
-            </BaseLayout>
-          </DirectionProvider>
-        </QueryProvider>
+        <NuqsAdapter>
+          <QueryProvider>
+            <DirectionProvider>
+              <BaseLayout>
+                <AuthProvider>{children}</AuthProvider>
+              </BaseLayout>
+            </DirectionProvider>
+          </QueryProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

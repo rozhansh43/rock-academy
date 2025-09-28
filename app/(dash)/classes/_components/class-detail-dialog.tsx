@@ -1,16 +1,20 @@
 import { FC } from 'react';
-import { FullscreenDialog } from '@/components/ui/fullscreen-dialog';
+import { FullscreenDialog, useOpen } from '@/components/ui/fullscreen-dialog';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { apiCaller } from '@/apis/api-caller';
 import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/utils/strings';
+import { useQueryState } from 'nuqs';
 
-export const ClassDetailDialog: FC<{ id: string }> = ({ id }) => {
+export const ClassDetailDialog: FC = () => {
+  const [id, setId] = useQueryState('id');
+  const detailDialog = useOpen('class-detail');
+
   const query = useQuery({
     enabled: !!id,
     queryKey: ['class-detail', id],
-    queryFn: () => apiCaller.offerings.events.$id.get(id),
+    queryFn: () => apiCaller.offerings.events.$id.get(id ?? ''),
   });
   const data = (query.data as any)?.data as typeof query.data;
 
@@ -52,9 +56,11 @@ export const ClassDetailDialog: FC<{ id: string }> = ({ id }) => {
 
   return (
     <FullscreenDialog
-      paramName="class-detail-dialog"
-      openValue="open"
+      id="class-detail"
       className="overflow-auto p-0"
+      onClose={() => {
+        setId(null);
+      }}
     >
       <FullscreenDialog.Body className="flex flex-col">
         <Image
