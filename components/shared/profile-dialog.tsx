@@ -25,7 +25,7 @@ const formSchema = z.object({
   phone: z.string().min(1, { message: 'شماره موبایل الزامی است' }),
   nationalId: z.string().optional(),
   birthDate: z.string().optional(),
-  email: z.email({ message: 'ایمیل معتبر نیست' }).nullish().optional(),
+  email: z.email({ message: 'ایمیل معتبر نیست' }).optional(),
 });
 type FormType = z.infer<typeof formSchema>;
 
@@ -42,8 +42,8 @@ export const ProfileDialog = () => {
       return apiCaller.auth.accounts.profile.put(data);
     },
     onSuccess: () => {
-      close();
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      close();
     },
   });
 
@@ -92,7 +92,8 @@ export const ProfileDialog = () => {
                   last_name: values.lastName,
                   phone: values.phone,
                   national_id: values.nationalId || undefined,
-                  birth_date: values.birthDate || undefined,
+                  birth_date:
+                    values.birthDate?.replaceAll('/', '-') || undefined,
                   email: values.email || undefined,
                 });
               })}
@@ -173,6 +174,49 @@ export const ProfileDialog = () => {
                         onValueChange={(values) => {
                           onChange(values.value);
                         }}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="birthDate"
+                render={({ field: { onChange, ...field } }) => (
+                  <FormItem>
+                    <FormLabel>تاریخ تولد</FormLabel>
+                    <FormControl>
+                      <InputPattern
+                        variant="lg"
+                        placeholder="روز / ماه / سال"
+                        format="#### / ## / ##"
+                        mask="_"
+                        type="tel"
+                        onValueChange={(values) => {
+                          onChange(values.formattedValue.replaceAll(' ', ''));
+                        }}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ایمیل</FormLabel>
+                    <FormControl>
+                      <Input
+                        variant="lg"
+                        type="email"
+                        dir="ltr"
+                        className="placeholder:text-right"
+                        placeholder="ایمیل خود را وارد کنید"
                         {...field}
                       />
                     </FormControl>
