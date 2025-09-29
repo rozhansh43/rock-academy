@@ -15,7 +15,7 @@ const dialogContentVariants = cva(
         default:
           'left-[50%] top-[50%] max-w-lg translate-x-[-50%] translate-y-[-50%] w-full',
         fullscreen:
-          'left-[50%] max-w-md translate-x-[-50%] top-0 size-full rounded-none!',
+          'left-[50%] overflow-auto! max-w-md translate-x-[-50%] top-0 size-full rounded-none!',
       },
     },
     defaultVariants: {

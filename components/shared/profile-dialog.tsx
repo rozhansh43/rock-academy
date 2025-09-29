@@ -12,12 +12,17 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiCaller } from '@/apis/api-caller';
 import { MeProfile } from '@/apis/models/MeProfile';
+import { request } from '@/apis/core/request';
+import { OpenAPI } from '@/apis/core/OpenAPI';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input, InputPattern } from '@/components/ui/input';
 import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
+import AvatarUpload from '../ui/avatar-upload';
+import { FileWithPreview } from '@/hooks/use-file-upload';
+import { useState } from 'react';
 
 const formSchema = z.object({
   firstName: z.string().min(1, { message: 'نام الزامی است' }),
@@ -31,6 +36,9 @@ type FormType = z.infer<typeof formSchema>;
 
 export const ProfileDialog = () => {
   const { open, close } = useOpen('profile');
+  const [selectedAvatar, setSelectedAvatar] = useState<FileWithPreview | null>(
+    null,
+  );
 
   const queryClient = useQueryClient();
   const profileData = queryClient.getQueryData<{ data: MeProfile }>([
@@ -38,12 +46,42 @@ export const ProfileDialog = () => {
   ])?.data;
 
   const mutation = useMutation({
-    mutationFn: (data: MeProfile) => {
-      return apiCaller.auth.accounts.profile.put(data);
+    mutationFn: async (data: { profile: MeProfile; avatar?: File }) => {
+      if (data.avatar) {
+        // Send form-data with avatar
+        const formDataObj = {
+          avatar: data.avatar,
+          first_name: data.profile.first_name || '',
+          last_name: data.profile.last_name || '',
+          phone: data.profile.phone || '',
+          ...(data.profile.national_id && {
+            national_id: data.profile.national_id,
+          }),
+          ...(data.profile.birth_date && {
+            birth_date: data.profile.birth_date,
+          }),
+          ...(data.profile.email && { email: data.profile.email }),
+        };
+
+        // Use the direct request function with formData
+        return request<MeProfile>(OpenAPI, {
+          method: 'PATCH',
+          url: '/auth/accounts/profile/',
+          formData: formDataObj,
+        });
+      } else {
+        // Send regular JSON data
+        return apiCaller.auth.accounts.profile.put(data.profile);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      setSelectedAvatar(null);
       close();
+    },
+    onError: (error) => {
+      console.error('Profile update failed:', error);
+      // Avatar will remain selected for retry
     },
   });
 
@@ -68,6 +106,8 @@ export const ProfileDialog = () => {
         email: profileData.email || undefined,
         birthDate: profileData.birth_date || undefined,
       });
+      // Reset avatar selection when dialog opens
+      setSelectedAvatar(null);
     }
   }, [profileData]);
 
@@ -76,7 +116,11 @@ export const ProfileDialog = () => {
       <Button variant="dim" mode="icon" onClick={() => open()} type="button">
         <ProfileIcon className="size-6 stroke-zinc-500" />
       </Button>
-      <FullscreenDialog id="profile" className="dash-gradient">
+      <FullscreenDialog
+        id="profile"
+        className="dash-gradient"
+        onClose={() => setSelectedAvatar(null)}
+      >
         <FullscreenDialog.Header>
           <FullscreenDialog.Title className="text-dark-2 text-center">
             حساب کاربری
@@ -87,7 +131,7 @@ export const ProfileDialog = () => {
             <form
               className="space-y-5"
               onSubmit={form.handleSubmit((values) => {
-                mutation.mutate({
+                const profileData: MeProfile = {
                   first_name: values.firstName,
                   last_name: values.lastName,
                   phone: values.phone,
@@ -95,9 +139,23 @@ export const ProfileDialog = () => {
                   birth_date:
                     values.birthDate?.replaceAll('/', '-') || undefined,
                   email: values.email || undefined,
+                };
+
+                const avatarFile =
+                  selectedAvatar?.file instanceof File
+                    ? selectedAvatar.file
+                    : undefined;
+
+                mutation.mutate({
+                  profile: profileData,
+                  avatar: avatarFile,
                 });
               })}
             >
+              <AvatarUpload
+                onFileChange={setSelectedAvatar}
+                defaultAvatar={profileData?.avatar || undefined}
+              />
               <FormField
                 control={form.control}
                 name="firstName"
@@ -233,7 +291,11 @@ export const ProfileDialog = () => {
                 {mutation.isPending && (
                   <Loader2 className="size-4 animate-spin" />
                 )}
-                ثبت اطلاعات
+                {selectedAvatar && mutation.isPending
+                  ? 'در حال آپلود تصویر...'
+                  : mutation.isPending
+                    ? 'در حال ذخیره...'
+                    : 'ثبت اطلاعات'}
               </Button>
             </form>
           </Form>

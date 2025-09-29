@@ -1,15 +1,15 @@
 import { FC } from 'react';
-import { FullscreenDialog, useOpen } from '@/components/ui/fullscreen-dialog';
+import { FullscreenDialog } from '@/components/ui/fullscreen-dialog';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { apiCaller } from '@/apis/api-caller';
 import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/utils/strings';
 import { useQueryState } from 'nuqs';
+import { Loader2Icon } from 'lucide-react';
 
 export const ClassDetailDialog: FC = () => {
   const [id, setId] = useQueryState('id');
-  const detailDialog = useOpen('class-detail');
 
   const query = useQuery({
     enabled: !!id,
@@ -57,52 +57,72 @@ export const ClassDetailDialog: FC = () => {
   return (
     <FullscreenDialog
       id="class-detail"
-      className="overflow-auto p-0"
+      className="p-0"
       onClose={() => {
         setId(null);
       }}
     >
       <FullscreenDialog.Body className="flex flex-col">
-        <Image
-          src="/images/class-1.png"
-          alt="class-detail-dialog"
-          width={440}
-          height={410}
-          className="w-full basis-100 object-cover"
-        />
-        <div className="-mt-10 min-h-1/2 flex-1 rounded-t-4xl bg-white p-6">
-          <h1 className="text-xl font-bold">{data?.persian_name}</h1>
-          <div className="mt-6 flex flex-col gap-5">
-            {items.map((item) => (
-              <div key={item.label} className="flex flex-row gap-2 text-sm">
-                <span className="text-middle-gray basis-25">{item.label}</span>
-                <span className="text-dark-1 flex-1 border-b pb-1">
-                  {item.value}
-                </span>
+        {!query.isFetching && !query.isError && (
+          <>
+            <Image
+              src="/images/class-1.png"
+              alt="class-detail-dialog"
+              width={440}
+              height={410}
+              className="w-full basis-100 object-cover"
+            />
+            <div className="-mt-10 min-h-1/2 flex-1 rounded-t-4xl bg-white p-6">
+              <h1 className="text-xl font-bold">{data?.persian_name}</h1>
+              <div className="mt-6 flex flex-col gap-5">
+                {items.map((item) => (
+                  <div key={item.label} className="flex flex-row gap-2 text-sm">
+                    <span className="text-middle-gray basis-25">
+                      {item.label}
+                    </span>
+                    <span className="text-dark-1 flex-1 border-b pb-1">
+                      {item.value}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+              {data?.description && (
+                <>
+                  <h2 className="text-dark-2 mt-6 text-base font-medium">
+                    معرفی
+                  </h2>
+                  <p
+                    className="text-dark-1 text-sm"
+                    dangerouslySetInnerHTML={{ __html: data.description }}
+                  ></p>
+                </>
+              )}
+            </div>
+            <div className="bg-linear div sticky bottom-0 flex w-full flex-row items-center justify-between gap-1 rounded-t-3xl bg-gradient-to-t from-white to-purple-100 p-6">
+              <Button
+                size="lg"
+                className="h-13 w-40 rounded-4xl text-lg font-semibold"
+              >
+                ثبت نام
+              </Button>
+              <span className="text-dark-1 text-lg font-medium">
+                {formatPrice(data?.price)} تومان
+              </span>
+            </div>
+          </>
+        )}
+        {query.isFetching && (
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <Loader2Icon className="size-20 animate-spin" />
           </div>
-          {data?.description && (
-            <>
-              <h2 className="text-dark-2 mt-6 text-base font-medium">معرفی</h2>
-              <p
-                className="text-dark-1 text-sm"
-                dangerouslySetInnerHTML={{ __html: data.description }}
-              ></p>
-            </>
-          )}
-        </div>
-        <div className="bg-linear div sticky bottom-0 flex w-full flex-row items-center justify-between gap-1 rounded-t-3xl bg-gradient-to-t from-white to-purple-100 p-6">
-          <Button
-            size="lg"
-            className="h-13 w-40 rounded-4xl text-lg font-semibold"
-          >
-            ثبت نام
-          </Button>
-          <span className="text-dark-1 text-lg font-medium">
-            {formatPrice(data?.price)} تومان
-          </span>
-        </div>
+        )}
+        {query.isError && (
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <p className="text-dark-1 text-center text-lg font-medium">
+              خطا در بارگذاری داده
+            </p>
+          </div>
+        )}
       </FullscreenDialog.Body>
     </FullscreenDialog>
   );
