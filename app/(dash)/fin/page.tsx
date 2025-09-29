@@ -1,5 +1,5 @@
 'use client';
 
 export default function Page() {
-  return <div className="">خانه</div>;
+  return <div className="">مالی</div>;
 }
