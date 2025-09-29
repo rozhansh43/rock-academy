@@ -50,7 +50,7 @@ const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
           height={34}
           className={cn(
             'stroke-zinc-400',
-            isActive('/events') && 'fill-purple-500',
+            isActive('/events') && 'stroke-purple-500',
           )}
         />
       ),
