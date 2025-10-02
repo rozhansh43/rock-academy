@@ -120,7 +120,12 @@ export default function Page() {
                   </span>
                 </p>
                 <div className="space-x-3">
-                  <Button size="sm" className="w-17">
+                  <Button
+                    size="sm"
+                    className="w-17"
+                    // @ts-ignore
+                    disabled={!item.is_registration_active}
+                  >
                     ثبت نام
                   </Button>
                   <Button
