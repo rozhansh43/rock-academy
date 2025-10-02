@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/utils/strings';
 import { useQueryState } from 'nuqs';
 import { Loader2Icon } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 export const ClassDetailDialog: FC = () => {
   const [id, setId] = useQueryState('id');
@@ -16,7 +17,11 @@ export const ClassDetailDialog: FC = () => {
     queryKey: ['class-detail', id],
     queryFn: () => apiCaller.offerings.events.$id.get(id ?? ''),
   });
-  const data = (query.data as any)?.data as typeof query.data;
+  const data = (query.data as any)?.data as typeof query.data & {
+    is_registration_active?: boolean;
+    discount_percentage: number;
+    price_after_discount: number;
+  };
 
   const items = [
     {
@@ -102,12 +107,32 @@ export const ClassDetailDialog: FC = () => {
               <Button
                 size="lg"
                 className="h-13 w-40 rounded-4xl text-lg font-semibold"
+                disabled={!data?.is_registration_active}
               >
                 ثبت نام
               </Button>
-              <span className="text-dark-1 text-lg font-medium">
-                {formatPrice(data?.price)} تومان
-              </span>
+              {!data?.discount_percentage ? (
+                <span className="text-dark-1 text-lg font-semibold">
+                  {formatPrice(data?.price)} تومان
+                </span>
+              ) : (
+                <div className="text-dark-1 flex flex-col items-end gap-1 text-lg font-semibold">
+                  <div className="flex flex-row items-center gap-2">
+                    <Badge
+                      shape="circle"
+                      variant="primary"
+                      className="font-bold"
+                    >
+                      {data?.discount_percentage}%
+                    </Badge>
+                    <span className="text-light-1 text-sm line-through">
+                      {formatPrice(data?.price)} تومان
+                    </span>
+                  </div>
+
+                  <span>{formatPrice(data?.price_after_discount)} تومان</span>
+                </div>
+              )}
             </div>
           </>
         )}
