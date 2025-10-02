@@ -4,7 +4,6 @@ import { Input, InputWrapper } from '@/components/ui/input';
 import { MenuIcon, SearchIcon, SortAscIcon, SortDescIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { apiCaller } from '@/apis/api-caller';
-import { weekdaysToFa } from '@/utils/strings';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,12 +88,14 @@ export default function Page() {
                   </h3>
                   <p className="text-[11px] leading-[14.7px] font-medium">
                     <span className="text-light-1">مربی : </span>
-                    <span className="text-dark-3">?</span>
+                    <span className="text-dark-3">
+                      {item?.instructor || '-'}
+                    </span>
                   </p>
                   <p className="text-[11px] leading-[14.7px] font-medium">
                     <span className="text-light-1">روزهای برگزاری : </span>
                     <span className="text-dark-3">
-                      {weekdaysToFa(item.weekdays)}
+                      {item.weekdays_fa?.join('، ') || '-'}
                     </span>
                   </p>
                   <p className="text-[11px] leading-[14.7px] font-medium">

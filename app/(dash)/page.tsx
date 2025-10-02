@@ -17,7 +17,6 @@ import { ClassesIcon } from '@/components/icons/classes-icon';
 import { useQuery } from '@tanstack/react-query';
 import { apiCaller } from '@/apis/api-caller';
 import { useOpen } from '@/hooks/use-open';
-import { weekdaysToFa } from '@/utils/strings';
 import { useQueryState } from 'nuqs';
 import { ClassDetailDialog } from './classes/_components/class-detail-dialog';
 
@@ -105,12 +104,12 @@ export default function Page() {
                 </h3>
                 <p className="text-[11px] leading-[14.7px] font-medium">
                   <span className="text-light-1">مربی : </span>
-                  <span className="text-dark-3">?</span>
+                  <span className="text-dark-3">{item?.instructor || '-'}</span>
                 </p>
                 <p className="text-[11px] leading-[14.7px] font-medium">
                   <span className="text-light-1">روزهای برگزاری : </span>
                   <span className="text-dark-3">
-                    {weekdaysToFa(item.weekdays)}
+                    {item.weekdays_fa?.join('، ') || '-'}
                   </span>
                 </p>
                 <p className="text-[11px] leading-[14.7px] font-medium">
