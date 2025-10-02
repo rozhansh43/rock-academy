@@ -85,12 +85,18 @@ export class OfferingsService {
             price?: number;
             capacity?: number;
             semester?: number;
+            instructor?: string;
             salon?: {
                 id?: number;
                 name?: string;
             };
             is_recurring?: boolean;
+            /**
+             * Image URL
+             */
+            image?: string;
             weekdays?: Array<number>;
+            weekdays_fa?: Array<string>;
             start_time?: string;
             end_time?: string;
             start_date?: string;
@@ -199,6 +205,14 @@ export class OfferingsService {
              */
             to?: string;
         };
+        /**
+         * Image URL
+         */
+        image?: string;
+        /**
+         * Instructor name
+         */
+        instructor?: string;
         /**
          * Salon name
          */
