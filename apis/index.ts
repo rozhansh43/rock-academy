@@ -14,3 +14,4 @@ export type { VerifyOTPIn } from './models/VerifyOTPIn';
 export { AuthService } from './services/AuthService';
 export { CalendarService } from './services/CalendarService';
 export { OfferingsService } from './services/OfferingsService';
+export { PaymentsService } from './services/PaymentsService';

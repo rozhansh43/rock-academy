@@ -13,9 +13,23 @@ export class CalendarService {
      *
      * **Query Parameters:**
      * - `period`: Calendar period (day, week, month, year) - defaults to 'month'
-     * - `date`: Anchor date for the calendar (ISO format or Jalali) - defaults to today
+     * - `date`: Gregorian date in ISO format (e.g., 2024-10-15) - optional
+     * - `jdate`: Jalali date with dash or slash (e.g., 1404-07-10 or 1404/07/10) - optional
      * - `tz`: Timezone for the calendar - defaults to 'Asia/Tehran'
      * - `kinds`: Comma-separated list of offering kinds to include
+     *
+     * **Date Selection:**
+     * - If `jdate` is provided, it takes priority over `date`
+     * - If neither is provided, defaults to today
+     * - Use `date` for Gregorian dates, `jdate` for Jalali dates
+     *
+     * **Period Behavior:**
+     * - `day`: Returns offerings running on the specified date
+     * - `week`: Returns offerings running during the full week containing the date
+     * - `month`: Returns offerings running from the specified date to end of that month
+     * - `year`: Returns offerings running from the specified date to end of that year
+     *
+     * **Important:** Calendar shows offerings based on their actual start_date and end_date (when the offering is happening), NOT based on registration dates.
      *
      * **Response includes:**
      * - Calendar period and anchor date
@@ -30,13 +44,17 @@ export class CalendarService {
      * - Number of days with any offerings
      *
      * **Examples:**
-     * - `/events/calendar/?period=month&date=1403/01/01`
-     * - `/events/calendar/?period=week&kinds=class,workshop&tz=Asia/Tehran`
+     * - `/events/calendar/?period=month&jdate=1404-07-10` (Jalali date with dash)
+     * - `/events/calendar/?period=month&jdate=1404/07/10` (Jalali date with slash)
+     * - `/events/calendar/?period=month&date=2025-10-15` (Gregorian date)
+     * - `/events/calendar/?period=week&jdate=1404-07-15&kinds=class,workshop`
+     * - `/events/calendar/?period=month` (defaults to today to end of current month)
      *
      * @param period Calendar period to display
-     * @param date Anchor date (ISO format or Jalali), defaults to today
+     * @param date Gregorian date in ISO format (e.g., 2025-10-15). For month/year periods, returns from this date to end of period. Optional.
      * @param tz Timezone for the calendar
      * @param kinds Comma-separated list of offering kinds to include
+     * @param jdate Jalali date with dash (1404-07-10) or slash (1404/07/10). Takes priority over 'date' if both provided. For month/year periods, returns from this date to end of period. Optional.
      * @returns any Calendar view of registrable offerings
      * @throws ApiError
      */
@@ -45,6 +63,7 @@ export class CalendarService {
         date?: string,
         tz?: string,
         kinds?: string,
+        jdate?: string,
     ): CancelablePromise<{
         /**
          * Calendar period
@@ -135,6 +154,7 @@ export class CalendarService {
                 'date': date,
                 'tz': tz,
                 'kinds': kinds,
+                'jdate': jdate,
             },
             errors: {
                 400: `Bad request - invalid parameters`,

@@ -21,13 +21,16 @@ export class OfferingsService {
      * - `reg_from`/`reg_to`: Registration date range (ISO or Jalali format)
      * - `reg_from_j`/`reg_to_j`: Registration date range (Jalali format)
      * - `reg_mode`: How to handle registration date filtering (cover/overlap)
+     * - `date_from_j`/`date_to_j`: Offering date range filter (Jalali format YYYY-MM-DD)
+     * - `date_mode`: How to handle offering date filtering (overlap/cover, default: overlap)
      * - `op`: How to combine multiple filters (and/or)
      * - `ordering`: Sort results by various fields
      *
      * **Examples:**
      * - `/events/?search=guitar&kind=class&is_online=true`
      * - `/events/?price_min=100000&price_max=500000&ordering=price`
-     * - `/events/?salon=1,2,3&reg_from_j=1403/01/01&reg_to_j=1403/12/29`
+     * - `/events/?salon=1,2,3&reg_from_j=1403-01-01&reg_to_j=1403-12-29`
+     * - `/events/?kind=salon&date_from_j=1404-07-10&date_to_j=1404-07-20&date_mode=overlap`
      *
      * @param page یک شماره صفحه‌ در مجموعه نتایج صفحه‌بندی شده.
      * @param search Search in Persian and English names
@@ -44,6 +47,9 @@ export class OfferingsService {
      * @param regToJ Registration end date (Jalali format)
      * @param op How to combine multiple filters
      * @param ordering Sort results by field
+     * @param dateFromJ Offering start date filter - from (Jalali format YYYY/MM/DD)
+     * @param dateToJ Offering end date filter - to (Jalali format YYYY/MM/DD)
+     * @param dateMode Date filtering mode: 'overlap' (default) - offerings that overlap with date range, 'cover' - offerings that fully cover the date range
      * @returns any List of offerings
      * @throws ApiError
      */
@@ -63,6 +69,9 @@ export class OfferingsService {
         regToJ?: string,
         op?: 'and' | 'or',
         ordering?: 'price' | '-price' | 'semester' | '-semester' | 'salon' | '-salon' | 'start_date' | '-start_date' | 'end_time' | '-end_time',
+        dateFromJ?: string,
+        dateToJ?: string,
+        dateMode?: 'cover' | 'overlap',
     ): CancelablePromise<{
         /**
          * Total number of results
@@ -129,6 +138,9 @@ export class OfferingsService {
                 'reg_to_j': regToJ,
                 'op': op,
                 'ordering': ordering,
+                'date_from_j': dateFromJ,
+                'date_to_j': dateToJ,
+                'date_mode': dateMode,
             },
             errors: {
                 400: `Bad request - invalid filter parameters`,
@@ -181,6 +193,18 @@ export class OfferingsService {
          */
         price?: number;
         /**
+         * Instructor name
+         */
+        instructor?: string;
+        /**
+         * Discount percentage
+         */
+        discount_percentage?: number;
+        /**
+         * Price after discount
+         */
+        price_after_discount?: number;
+        /**
          * Capacity
          */
         capacity?: number;
@@ -209,10 +233,6 @@ export class OfferingsService {
          * Image URL
          */
         image?: string;
-        /**
-         * Instructor name
-         */
-        instructor?: string;
         /**
          * Salon name
          */
