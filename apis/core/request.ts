@@ -343,6 +343,13 @@ export const request = <T>(
           headers,
           onCancel,
         );
+
+        if (!url.includes('/auth/') && response.status === 401) {
+          headers.delete('Authorization');
+          removeCookie(COOKIE_KEYS.ACCESS_TOKEN);
+          window.location.href = '/login';
+        }
+
         const responseBody = await getResponseBody(response);
         const responseHeader = getResponseHeader(
           response,
