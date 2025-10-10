@@ -9,6 +9,7 @@ import { ClassesIcon } from '../icons/classes-icon';
 import { HomeIcon } from '../icons/home-icon';
 import { EventsMenuIcon } from '../icons/events-menu-icon';
 import { MoneyBagIcon } from '../icons/money-bag-icon';
+import { PaymentDialog } from '../shared/payment-dialog';
 
 const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
@@ -118,6 +119,7 @@ const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
           ))}
         </div>
       </nav>
+      <PaymentDialog />
     </div>
   );
 };
