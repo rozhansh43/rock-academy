@@ -29,7 +29,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
-ENV NEXT_PUBLIC_BACKEND_BASE_URL=""
+ENV NEXT_PUBLIC_BACKEND_BASE_URL="127.0.0.1:80"
 
 # Create non-root user
 RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
