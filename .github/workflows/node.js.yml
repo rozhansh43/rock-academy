@@ -2,7 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   REGISTRY: ghcr.io
@@ -40,7 +40,7 @@ jobs:
           context: .
           push: true
           build-args: |
-            NEXT_PUBLIC_BACKEND_BASE_URL=${{ secrets.NEXT_PUBLIC_BACKEND_BASE_URL }}
+            NEXT_PUBLIC_BACKEND_BASE_URL=127.0.0.1:80
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -73,7 +73,7 @@ jobs:
           FRONT_IMAGE: ghcr.io/${{ github.repository }}:latest
         run: |
           cd ~/rock-front
-          export NEXT_PUBLIC_BACKEND_BASE_URL=${{ secrets.NEXT_PUBLIC_BACKEND_BASE_URL }}
+          export NEXT_PUBLIC_BACKEND_BASE_URL=127.0.0.1:80
           docker compose -f docker-compose.front.prod.yaml pull
           docker compose -f docker-compose.front.prod.yaml up -d
           docker system prune -f
