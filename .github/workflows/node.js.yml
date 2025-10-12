@@ -22,8 +22,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.GHCR_USER || github.actor }}
+          password: ${{ secrets.GHCR_PAT || secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels)
         id: meta
@@ -57,8 +57,37 @@ jobs:
           if [ -f deploy/nginx.front.conf ]; then cp deploy/nginx.front.conf ~/rock-front/deploy/nginx.front.conf; fi
 
       - name: Log in to GHCR
+        env:
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
+          GHCR_USER: ${{ secrets.GHCR_USER }}
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "🔍 Checking secrets availability..."
+          if [ -z "$GHCR_PAT" ]; then
+            echo "❌ GHCR_PAT is empty or not set"
+          else
+            echo "✅ GHCR_PAT is set"
+          fi
+          
+          if [ -z "$GHCR_USER" ]; then
+            echo "❌ GHCR_USER is empty or not set"
+          else
+            echo "✅ GHCR_USER is set to: $GHCR_USER"
+          fi
+          
+          echo ""
+          echo "🔐 Attempting login..."
+          if [ -n "$GHCR_PAT" ] && [ -n "$GHCR_USER" ]; then
+            echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            echo "✅ Logged in to GHCR with PAT"
+          else
+            echo "⚠️  Using GITHUB_TOKEN as fallback..."
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo "✅ Logged in with GITHUB_TOKEN"
+          fi
+          
+          echo ""
+          echo "🧪 Testing pull access..."
+          docker pull ghcr.io/${{ github.repository }}:latest || echo "❌ Pull test failed"
 
       - name: Deploy
         env:
