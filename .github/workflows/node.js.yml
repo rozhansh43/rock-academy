@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: rock-academy/rock-front
 
 jobs:
   build-and-push:
@@ -67,13 +67,13 @@ jobs:
           else
             echo "✅ GHCR_PAT is set"
           fi
-          
+
           if [ -z "$GHCR_USER" ]; then
             echo "❌ GHCR_USER is empty or not set"
           else
             echo "✅ GHCR_USER is set to: $GHCR_USER"
           fi
-          
+
           echo ""
           echo "🔐 Attempting login..."
           if [ -n "$GHCR_PAT" ] && [ -n "$GHCR_USER" ]; then
@@ -84,14 +84,14 @@ jobs:
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             echo "✅ Logged in with GITHUB_TOKEN"
           fi
-          
+
           echo ""
           echo "🧪 Testing pull access..."
-          docker pull ghcr.io/${{ github.repository }}:latest || echo "❌ Pull test failed"
+          docker pull ghcr.io/rock-academy/rock-front:latest || echo "❌ Pull test failed"
 
       - name: Deploy
         env:
-          FRONT_IMAGE: ghcr.io/${{ github.repository }}:latest
+          FRONT_IMAGE: ghcr.io/rock-academy/rock-front:latest
         run: |
           cd ~/rock-front
           export NEXT_PUBLIC_BACKEND_BASE_URL=http://localhost:80

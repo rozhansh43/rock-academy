@@ -1,6 +1,6 @@
 services:
   front:
-    image: ghcr.io/khatabakhsh/rock-front:latest
+    image: ${FRONT_IMAGE:-ghcr.io/rock-academy/rock-front:latest}
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_BACKEND_BASE_URL=${NEXT_PUBLIC_BACKEND_BASE_URL}
