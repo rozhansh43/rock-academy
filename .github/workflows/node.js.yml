@@ -56,24 +56,16 @@ jobs:
           cp docker-compose.front.prod.yaml ~/rock-front/
           if [ -f deploy/nginx.front.conf ]; then cp deploy/nginx.front.conf ~/rock-front/deploy/nginx.front.conf; fi
 
-      - name: GHCR login (optional, only if secrets exist)
-        env:
-          GHCR_PAT: ${{ secrets.GHCR_PAT }}
-          GHCR_USER: ${{ secrets.GHCR_USER }}
+      - name: Log in to GHCR
         run: |
-          if [ -n "$GHCR_PAT" ] && [ -n "$GHCR_USER" ]; then
-            echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-            echo "Logged in to GHCR."
-          else
-            echo "Skipping GHCR login (no GHCR_PAT/GHCR_USER provided)."
-          fi
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Deploy
         env:
           FRONT_IMAGE: ghcr.io/${{ github.repository }}:latest
         run: |
           cd ~/rock-front
-          export NEXT_PUBLIC_BACKEND_BASE_URL=https://localhost:80
+          export NEXT_PUBLIC_BACKEND_BASE_URL=http://localhost:80
           docker compose -f docker-compose.front.prod.yaml pull
           docker compose -f docker-compose.front.prod.yaml up -d
           docker system prune -f
