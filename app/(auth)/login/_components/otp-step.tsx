@@ -23,6 +23,7 @@ import { SendOTPIn } from '@/apis';
 import { setCookie } from '@/utils/cookies';
 import { COOKIE_KEYS } from '@/utils/cookies';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const formSchema = z.object({
   code: z.string().min(1, { message: 'کد الزامی است' }),
@@ -113,32 +114,40 @@ export const OtpStep: FC<{
   };
 
   return (
-    <Form {...form}>
-      <form
-        className="relative flex size-full flex-col items-center gap-3 text-center"
-        onSubmit={form.handleSubmit(onSubmit)}
+    <div className="flex flex-col items-center gap-10 overflow-hidden">
+      <div className="relative -mt-80 h-170 w-150 overflow-hidden rounded-full bg-[linear-gradient(180deg,_#FF9AF6_0%,_#AB5BF8_100%)]">
+        <Image
+          className="absolute bottom-0 left-1/2 -translate-x-1/2"
+          src="/images/bg-otp.webp"
+          width={340}
+          height={340}
+          alt=""
+        />
+      </div>
+      <Button
+        type="button"
+        className="absolute top-4 left-4"
+        variant="secondary"
+        size="icon"
+        mode="icon"
+        shape="circle"
+        onClick={() => setStep(LOGIN_STEPS.PHONE)}
       >
-        <Button
-          type="button"
-          className="absolute left-0"
-          variant="outline"
-          size="icon"
-          mode="icon"
-          onClick={() => setStep(LOGIN_STEPS.PHONE)}
+        <ArrowLeftIcon className="stroke-dark-3 size-4" />
+      </Button>
+      <Form {...form}>
+        <form
+          className="container-main relative flex size-full max-w-85 flex-col items-center gap-6 text-center"
+          onSubmit={form.handleSubmit(onSubmit)}
         >
-          <ArrowLeftIcon className="size-4" />
-        </Button>
-        <div className="flex-1" />
-        <div className="flex-1 grow-2">
-          <h1 className="text-dark-2 text-xl font-semibold">ورود</h1>
-          <p className="text-dark-2 mt-2.5 text-sm">
+          <p className="text-dark-2 text-sm font-medium">
             لطفا کد ارسال شده به شماره {phoneNumber} را وارد کنید
           </p>
           <FormField
             control={form.control}
             name="code"
             render={({ field: { onChange, ...field } }) => (
-              <FormItem className="mt-5">
+              <FormItem className="">
                 <FormControl>
                   <InputOTP
                     maxLength={5}
@@ -164,7 +173,7 @@ export const OtpStep: FC<{
             )}
           />
           {isTimerActive ? (
-            <p className="text-dark-2 mt-3 text-xs">
+            <p className="text-dark-3 text-sm font-medium">
               {formatTime(timeLeft)} تا ارسال مجدد
             </p>
           ) : (
@@ -174,7 +183,7 @@ export const OtpStep: FC<{
               size="sm"
               disabled={sendMutation.isPending}
               onClick={() => sendMutation.mutate({ phone: phoneNumber })}
-              className="text-primary hover:text-primary/80 mt-3 h-auto text-xs"
+              className="text-primary hover:text-primary/80 h-auto text-sm font-medium"
             >
               {sendMutation.isPending ? (
                 <LoaderCircleIcon className="ml-1 size-3 animate-spin" />
@@ -182,19 +191,20 @@ export const OtpStep: FC<{
               ارسال مجدد کد
             </Button>
           )}
-        </div>
-        <Button
-          size="lg"
-          className="w-56 rounded-2xl"
-          type="submit"
-          disabled={mutation.isPending || sendMutation.isPending}
-        >
-          {mutation.isPending || sendMutation.isPending ? (
-            <LoaderCircleIcon className="ml-1 size-3 animate-spin" />
-          ) : null}
-          ورود
-        </Button>
-      </form>
-    </Form>
+
+          <Button
+            size="lg"
+            className="w-full rounded-2xl"
+            type="submit"
+            disabled={mutation.isPending || sendMutation.isPending}
+          >
+            {mutation.isPending || sendMutation.isPending ? (
+              <LoaderCircleIcon className="ml-1 size-3 animate-spin" />
+            ) : null}
+            ورود
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 };

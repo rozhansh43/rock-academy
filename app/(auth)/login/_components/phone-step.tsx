@@ -16,6 +16,7 @@ import { useMutation } from '@tanstack/react-query';
 import { apiCaller } from '@/apis/api-caller';
 import { InputPattern } from '@/components/ui/input';
 import { LoaderCircleIcon } from 'lucide-react';
+import Image from 'next/image';
 
 const formSchema = z.object({
   phone: z
@@ -54,25 +55,30 @@ export const PhoneStep: FC<{
   }, []);
 
   return (
-    <Form {...form}>
-      <form
-        className="flex size-full flex-col items-center gap-3 text-center"
-        onSubmit={form.handleSubmit((values) => {
-          setPhoneNumber(values.phone);
-          mutation.mutate(values);
-        })}
-      >
-        <div className="flex-1" />
-        <div className="flex-1 grow-2">
-          <h1 className="text-dark-2 text-xl font-semibold">ورود</h1>
-          <p className="text-dark-2 mt-2.5 text-sm">
+    <div className="size-full bg-[url('/images/bg-login.webp')] bg-cover bg-no-repeat">
+      <Form {...form}>
+        <form
+          className="container-main flex size-full max-w-80 -translate-y-10 flex-col items-center justify-center gap-9 text-center"
+          onSubmit={form.handleSubmit((values) => {
+            setPhoneNumber(values.phone);
+            mutation.mutate(values);
+          })}
+        >
+          <Image
+            src="/images/logotype.webp"
+            alt="logo"
+            width={150}
+            height={130}
+          />
+          <h1 className="text-dark-3 text-2xl font-bold">ورود/ثبت‌نام</h1>
+          <p className="text-dark-2 text-sm">
             لطفا شماره موبایل خود را وارد کنید
           </p>
           <FormField
             control={form.control}
             name="phone"
             render={({ field: { onChange, ...field } }) => (
-              <FormItem className="mt-5">
+              <FormItem className="-mt-4 w-full">
                 <FormControl>
                   <InputPattern
                     disabled={mutation.isPending}
@@ -92,19 +98,20 @@ export const PhoneStep: FC<{
               </FormItem>
             )}
           />
-        </div>
-        <Button
-          size="lg"
-          className="w-56 rounded-2xl"
-          type="submit"
-          disabled={mutation.isPending}
-        >
-          {mutation.isPending ? (
-            <LoaderCircleIcon className="ml-1 size-3 animate-spin" />
-          ) : null}
-          تایید
-        </Button>
-      </form>
-    </Form>
+
+          <Button
+            size="lg"
+            className="w-full rounded-2xl"
+            type="submit"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? (
+              <LoaderCircleIcon className="ml-1 size-3 animate-spin" />
+            ) : null}
+            دریافت کد
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 };

@@ -39,7 +39,7 @@ const buttonVariants = cva(
         dashed: '',
       },
       size: {
-        lg: 'h-10 rounded-lg px-4 text-base gap-1.5 [&_svg:not([class*=size-])]:size-4',
+        lg: 'h-13 rounded-lg px-4 text-lg font-bold gap-1.5 [&_svg:not([class*=size-])]:size-4',
         md: 'h-8.5 rounded-lg px-3 gap-1.5 text-[0.8125rem] leading-(--text-sm--line-height) [&_svg:not([class*=size-])]:size-4',
         sm: 'h-7 rounded-lg px-2.5 gap-1.25 text-xs [&_svg:not([class*=size-])]:size-3.5',
         icon: 'size-8.5 rounded-lg [&_svg:not([class*=size-])]:size-4 shrink-0',

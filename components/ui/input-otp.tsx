@@ -50,7 +50,7 @@ function InputOTPSlot({
     <div
       data-slot="input-otp-slot"
       className={cn(
-        'border-light-1 focus:border-ring relative flex h-10 w-10 items-center justify-center rounded-xl border border-y bg-white text-sm outline-hidden transition-all',
+        'border-light-1 focus:border-ring relative flex h-13.5 w-13.5 items-center justify-center rounded-xl border border-y bg-white text-sm outline-hidden transition-all',
         isActive && 'ring-ring ring-offset-background z-10 ring-2',
         className,
       )}

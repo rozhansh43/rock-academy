@@ -11,6 +11,7 @@ import {
   DialogFooter,
   DialogBody,
 } from './dialog';
+import { cn } from '@/utils/cn';
 
 interface FullscreenDialogProps {
   /**
@@ -72,7 +73,7 @@ export function FullscreenDialog({
         variant="fullscreen"
         showCloseButton={showCloseButton}
         overlay={overlay}
-        className={className}
+        className={cn('border-none', className)}
         onClose={close}
         {...contentProps}
       >
