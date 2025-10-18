@@ -1,7 +1,9 @@
 'use client';
 
+import { apiCaller } from '@/apis/api-caller';
 import { ProfileDialog } from '@/components/shared/profile-dialog';
 import { Button } from '@/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
 import { ChevronRightIcon, ChevronLeftIcon, MenuIcon } from 'lucide-react';
 
 const weekdays = ['شنبه', '1شنبه', '2شنبه', '3شنبه', '4شنبه', '5شنبه', 'جمعه'];
@@ -570,6 +572,14 @@ export default function Page() {
     },
   };
 
+  const query = useQuery({
+    queryKey: ['events'],
+    queryFn: () => apiCaller.offerings.events.get(1, '', 'event'),
+  });
+  const data = (query.data as any)?.data as typeof query.data;
+
+  console.log(data);
+
   return (
     <div className="container-main mt-8 space-y-8">
       <div className="flex flex-row items-center justify-between gap-2.5">
@@ -611,7 +621,7 @@ export default function Page() {
           ))}
           {Array.from({
             length: (calenderData?.data?.days?.[0]?.jalali?.weekday || 1) - 1,
-          }).map((item) => (
+          }).map(() => (
             <span />
           ))}
           {calenderData.data.days.map((day) => (

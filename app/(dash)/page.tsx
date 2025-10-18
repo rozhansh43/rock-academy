@@ -19,6 +19,7 @@ import { apiCaller } from '@/apis/api-caller';
 import { useOpen } from '@/hooks/use-open';
 import { useQueryState } from 'nuqs';
 import { ClassDetailDialog } from './classes/_components/class-detail-dialog';
+import { SalonDialog } from '@/components/shared/salon-dialog';
 
 export default function Page() {
   const plugin = useRef(Autoplay({ delay: 2500 }));
@@ -31,6 +32,7 @@ export default function Page() {
   const data = (query.data as any)?.data as typeof query.data;
 
   const detailDialog = useOpen('class-detail');
+  const salonDialog = useOpen('salon');
 
   return (
     <div className="mt-8 space-y-8">
@@ -75,6 +77,9 @@ export default function Page() {
         </div>
         <div className="flex size-22 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl bg-white/50 shadow-xs backdrop-blur-md">
           <DoorOpen
+            onClick={() => {
+              salonDialog.open();
+            }}
             className="stroke-orange-300"
             strokeWidth={1.5}
             width={36}
@@ -90,7 +95,7 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="container-main">
+      <div className="container-main flex flex-col gap-4">
         {query.isLoading ? (
           <p className="text-dark-2 text-center text-base font-medium">
             در حال بارگذاری...
@@ -149,6 +154,7 @@ export default function Page() {
         )}
       </div>
       <ClassDetailDialog />
+      <SalonDialog />
     </div>
   );
 }
