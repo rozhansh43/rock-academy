@@ -46,28 +46,44 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   if (isWaiting)
     return (
-      <div className="flex size-full items-center justify-center bg-linear-8 bg-gradient-to-t from-orange-100 from-[53.7%] to-orange-200 to-[97.64%]">
-        <Image src="/images/logo.png" alt="logo" width={93.4} height={68.6} />
-      </div>
-    );
-
-  if (isAuthenticated && query.isError)
-    return (
-      <div className="flex size-full flex-col items-center justify-center gap-3 bg-linear-8 bg-gradient-to-t from-orange-100 from-[53.7%] to-orange-200 to-[97.64%]">
-        <div className="text-dark-1 text-lg font-semibold">
-          مشکلی بوجود آمده است!
+      <div className="flex size-full flex-col items-center justify-between bg-white">
+        <div className="relative -mt-20">
+          <Image
+            src="/images/bg-wait-1.webp"
+            width={448}
+            height={410}
+            alt=""
+            className="absolute -top-5"
+          />
+          <Image src="/images/bg-wait-2.webp" width={448} height={410} alt="" />
         </div>
-        <div className="text-dark-2 text-base">
-          لطفا وضعیت اینترنت خود را بررسی کنید <br /> و یا چند دقیقه دیگر مجدد
-          تلاش کنید.
+        <div className="flex flex-1 flex-col items-center gap-3">
+          <Image src="/images/logo.webp" alt="logo" width={100} height={100} />
+          {isAuthenticated && query.isError ? (
+            <>
+              <div className="text-dark-1 text-lg font-semibold">
+                مشکلی بوجود آمده است!
+              </div>
+              <div className="text-dark-2 text-base">
+                لطفا وضعیت اینترنت خود را بررسی کنید <br /> و یا چند دقیقه دیگر
+                مجدد تلاش کنید.
+              </div>
+              <Button
+                size="lg"
+                className="mt-3"
+                onClick={() => window.location.reload()}
+              >
+                تلاش مجدد
+              </Button>
+            </>
+          ) : (
+            <p className="text-4xl font-bold">
+              <span className="text-primary">Rock </span>
+              Academy
+            </p>
+          )}
         </div>
-        <Button
-          size="lg"
-          className="mt-3"
-          onClick={() => window.location.reload()}
-        >
-          تلاش مجدد
-        </Button>
+        <div className="flex-1" />
       </div>
     );
 

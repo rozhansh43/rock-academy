@@ -7,7 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "gen-api": "npx openapi-typescript-codegen --input http://185.18.215.171/swagger/?format=openapi --output ./apis"
+    "gen:api": "npx openapi-typescript-codegen --input http://185.18.215.171/swagger/?format=openapi --output ./apis"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

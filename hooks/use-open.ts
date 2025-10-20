@@ -4,7 +4,7 @@ import { UseQueryStateOptions, useQueryState } from 'nuqs';
 
 export const useOpen = (
   id: string,
-  comp = 'dialog',
+  comp: 'dialog' | 'modal' | 'sheet' = 'dialog',
   queryStateOptions?: UseQueryStateOptions<string>,
 ) => {
   const compId = `${comp}-${id}`;

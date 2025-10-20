@@ -7,13 +7,31 @@
 
 /** Colors **/
 :root {
+  /* figma variables */
+  --light-3: #e4e4e7;
+  --light-2: #d4d4d8;
+  --light-1: #a1a1aa;
+  --middle-gray: #71717a;
+  --dark-3: #52525b;
+  --dark-2: #3f3f46;
+  --dark-1: #27272a;
+  --light: #fff7ed;
+  --light-orange: #fed7aa;
+  --orange: #f97316;
+  --dark-orange: #ea580c;
+  --purple: #a855f7;
+  --light-purple: #fee6f4;
+  --dark-blue: #1d4ed8;
+  --light-blue: #bae6fd;
+  --light-pink: #faefff;
+
   --background: var(--color-white);
   --foreground: var(--color-zinc-950);
   --card: var(--color-white);
   --card-foreground: var(--color-zinc-950);
   --popover: var(--color-white);
   --popover-foreground: var(--color-zinc-950);
-  --primary: var(--color-orange-500);
+  --primary: var(--color-purple);
   --primary-foreground: var(--color-white);
   --secondary: var(--color-zinc-100);
   --secondary-foreground: var(--color-zinc-900);
@@ -23,7 +41,7 @@
   --accent-foreground: var(--color-zinc-900);
   --destructive: var(--color-red-600);
   --destructive-foreground: var(--color-white);
-  --chart-1: var(--color-orange-500);
+  --chart-1: var(--purple);
   --chart-2: var(--color-green-500);
   --chart-3: var(--color-yellow-500);
   --chart-4: var(--color-red-500);
@@ -34,25 +52,6 @@
   --input: var(--color-zinc-200);
   --ring: var(--color-zinc-400);
   /* --radius: 0.5rem; */
-
-  /* figma variables */
-  --light-3: #e4e4e7;
-  --light-2: #d4d4d8;
-  --light-1: #a1a1aa;
-  --middle-gray: #71717a;
-  --dark-gray: #52525b;
-  --dark-2: #3f3f46;
-  --dark-1: #27272a;
-  --light: #fff7ed;
-  --light-orange: #fed7aa;
-  --orange: #f97316;
-  --dark-orange: #ea580c;
-  --purple: #d946ef;
-  --light-purple: #fae8ff;
-  --dark-blue: #1d4ed8;
-  --blue: #7dd3fc;
-  --light-blue: #f0f9ff;
-  --light-pink: #fce7f3;
 }
 
 .dark {
@@ -118,7 +117,7 @@
   --color-light-2: var(--light-2);
   --color-light-1: var(--light-1);
   --color-middle-gray: var(--middle-gray);
-  --color-dark-gray: var(--dark-gray);
+  --color-dark-3: var(--dark-3);
   --color-dark-2: var(--dark-2);
   --color-dark-1: var(--dark-1);
   --color-light: var(--light);
@@ -128,7 +127,6 @@
   --color-purple: var(--purple);
   --color-light-purple: var(--light-purple);
   --color-dark-blue: var(--dark-blue);
-  --color-blue: var(--blue);
   --color-light-blue: var(--light-blue);
   --color-light-pink: var(--light-pink);
 

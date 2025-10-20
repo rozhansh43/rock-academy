@@ -74,7 +74,7 @@ export default function Page() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <div className="mt-4.5">
+        <div className="mt-4.5 flex flex-col gap-4">
           {query.isLoading ? (
             <p className="text-dark-2 text-center text-base font-medium">
               در حال بارگذاری...
