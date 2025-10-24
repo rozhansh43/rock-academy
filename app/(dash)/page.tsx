@@ -96,7 +96,14 @@ export default function Page() {
           </p>
         ) : data?.results && data?.results?.length > 0 ? (
           data?.results?.map((item) => (
-            <div key={item.id} className="rounded-[20px] bg-white p-3">
+            <div
+              key={item.id}
+              className="cursor-pointer rounded-[20px] bg-white p-3 drop-shadow-xs"
+              onClick={() => {
+                setId(item.id?.toString() ?? '');
+                detailDialog.open();
+              }}
+            >
               <div className="flex flex-col gap-2">
                 <h3 className="text-dark-1 text-sm font-bold">
                   {item.persian_name}
@@ -118,26 +125,6 @@ export default function Page() {
                     {item.end_time?.replaceAll(':00', '')}
                   </span>
                 </p>
-                <div className="space-x-3">
-                  <Button
-                    size="sm"
-                    className="w-17"
-                    // @ts-ignore
-                    disabled={!item.is_registration_active}
-                  >
-                    ثبت نام
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      setId(item.id?.toString() ?? '');
-                      detailDialog.open();
-                    }}
-                  >
-                    اطلاعات بیشتر
-                  </Button>
-                </div>
               </div>
             </div>
           ))

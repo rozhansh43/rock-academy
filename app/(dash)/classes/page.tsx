@@ -77,7 +77,7 @@ export default function Page() {
             data?.results?.map((item) => (
               <div
                 key={item.id}
-                className="cursor-pointer rounded-[20px] bg-white p-3 drop-shadow-sm"
+                className="cursor-pointer rounded-[20px] bg-white p-3 drop-shadow-xs"
                 onClick={() => {
                   setId(item.id?.toString() ?? '');
                   detailDialog.open();
