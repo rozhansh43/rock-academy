@@ -624,7 +624,7 @@ export default function Page() {
           {Array.from({
             length: (calenderData?.data?.days?.[0]?.jalali?.weekday || 1) - 1,
           }).map((index) => (
-            <span key={index as string} />
+            <span key={index?.toString()} />
           ))}
           {calenderData.data.days.map((day, index) => (
             <span

@@ -238,7 +238,9 @@ export default function SidebarDrawer({
               const content = (
                 <div className="text-foreground/90 flex items-center justify-between gap-8 rounded-2xl px-3.5 py-[8px] transition hover:bg-white/60 dark:hover:bg-white/10">
                   <span className="text-[13px] font-medium">{m.label}</span>
-                  <span className="text-middle-gray text-[13px]">{m.icon}</span>
+                  <span className="text-gray stroke-middle-gray text-middle-gray fill-middle-gray text-[13px]">
+                    {m.icon}
+                  </span>
                 </div>
               );
               return (
