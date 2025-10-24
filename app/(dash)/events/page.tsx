@@ -617,15 +617,20 @@ export default function Page() {
         </div>
         <div className="grid grid-cols-7 gap-4 text-center text-sm">
           {weekdays.map((weekday) => (
-            <span className="text-middle-gray">{weekday}</span>
+            <span key={weekday.toString()} className="text-middle-gray">
+              {weekday}
+            </span>
           ))}
           {Array.from({
             length: (calenderData?.data?.days?.[0]?.jalali?.weekday || 1) - 1,
-          }).map(() => (
-            <span />
+          }).map((index) => (
+            <span key={index as string} />
           ))}
-          {calenderData.data.days.map((day) => (
-            <span className="text-dark-1 block h-9.5 w-6.5 justify-self-center rounded-full border pt-1 text-[13px] font-medium">
+          {calenderData.data.days.map((day, index) => (
+            <span
+              key={index}
+              className="text-dark-1 block h-9.5 w-6.5 justify-self-center rounded-full border pt-1 text-[13px] font-medium"
+            >
               {day.jalali.d}
             </span>
           ))}
