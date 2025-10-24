@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
-import { ProfileDialog } from '@/components/shared/profile-dialog';
 import { ClassDetailDialog } from './_components/class-detail-dialog';
 import { useOpen } from '@/hooks/use-open';
 import { useQueryState } from 'nuqs';
@@ -32,8 +31,8 @@ export default function Page() {
 
   return (
     <>
-      <div className="container-main pt-8">
-        <div className="flex flex-row items-center justify-between gap-2.5">
+      <div className="container-main">
+        <div className="-mt-14.5 w-[calc(100%-90px)]">
           <InputWrapper variant="lg">
             <SearchIcon />
             <Input
@@ -41,11 +40,6 @@ export default function Page() {
               placeholder="نام کلاس مورد نظر خود را جستجو کنید."
             />
           </InputWrapper>
-
-          <ProfileDialog />
-          <Button variant="dim" mode="icon">
-            <MenuIcon className="size-6 stroke-zinc-500" />
-          </Button>
         </div>
 
         <DropdownMenu>
@@ -81,7 +75,14 @@ export default function Page() {
             </p>
           ) : data?.results && data?.results?.length > 0 ? (
             data?.results?.map((item) => (
-              <div key={item.id} className="rounded-[20px] bg-white p-3">
+              <div
+                key={item.id}
+                className="cursor-pointer rounded-[20px] bg-white p-3 drop-shadow-xs"
+                onClick={() => {
+                  setId(item.id?.toString() ?? '');
+                  detailDialog.open();
+                }}
+              >
                 <div className="flex flex-col gap-2">
                   <h3 className="text-dark-1 text-sm font-bold">
                     {item.persian_name}
@@ -105,26 +106,6 @@ export default function Page() {
                       {item.end_time?.replaceAll(':00', '')}
                     </span>
                   </p>
-                  <div className="space-x-3">
-                    <Button
-                      size="sm"
-                      className="w-17"
-                      // @ts-ignore
-                      disabled={!item.is_registration_active}
-                    >
-                      ثبت نام
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setId(item.id?.toString() ?? '');
-                        detailDialog.open();
-                      }}
-                    >
-                      اطلاعات بیشتر
-                    </Button>
-                  </div>
                 </div>
               </div>
             ))

@@ -80,6 +80,8 @@ const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   ];
   const index = navItems.findIndex((item) => item.href === pathname);
 
+  const paymentDialog = useOpen('payment');
+
   return (
     <>
       <div className="size-full">

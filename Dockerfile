@@ -29,18 +29,20 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
-ENV NEXT_PUBLIC_BACKEND_BASE_URL=""
 
 # Create non-root user
 RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
 
 # Copy standalone server, static files, and required files from the build
-COPY --from=build /app/.next/standalone ./
-COPY --from=build /app/.next/static ./.next/static
-COPY --from=build /app/public ./public
+COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=build --chown=nextjs:nodejs /app/public ./public
 
 # If you use next/image with sharp, ensure libc6-compat is present
 RUN apk add --no-cache libc6-compat
+
+# Create .next directory with proper permissions for cache
+RUN mkdir -p .next/cache && chown -R nextjs:nodejs .next
 
 USER nextjs
 EXPOSE 3000

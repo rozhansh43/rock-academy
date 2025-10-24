@@ -2,11 +2,11 @@ name: CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: rock-academy/rock-front
 
 jobs:
   build-and-push:
@@ -22,8 +22,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.GHCR_USER || github.actor }}
+          password: ${{ secrets.GHCR_PAT || secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels)
         id: meta
@@ -40,7 +40,7 @@ jobs:
           context: .
           push: true
           build-args: |
-            NEXT_PUBLIC_BACKEND_BASE_URL=${{ secrets.NEXT_PUBLIC_BACKEND_BASE_URL }}
+            NEXT_PUBLIC_BACKEND_BASE_URL=http://185.18.215.171
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -56,24 +56,44 @@ jobs:
           cp docker-compose.front.prod.yaml ~/rock-front/
           if [ -f deploy/nginx.front.conf ]; then cp deploy/nginx.front.conf ~/rock-front/deploy/nginx.front.conf; fi
 
-      - name: GHCR login (optional, only if secrets exist)
+      - name: Log in to GHCR
         env:
           GHCR_PAT: ${{ secrets.GHCR_PAT }}
           GHCR_USER: ${{ secrets.GHCR_USER }}
         run: |
+          echo "🔍 Checking secrets availability..."
+          if [ -z "$GHCR_PAT" ]; then
+            echo "❌ GHCR_PAT is empty or not set"
+          else
+            echo "✅ GHCR_PAT is set"
+          fi
+
+          if [ -z "$GHCR_USER" ]; then
+            echo "❌ GHCR_USER is empty or not set"
+          else
+            echo "✅ GHCR_USER is set to: $GHCR_USER"
+          fi
+
+          echo ""
+          echo "🔐 Attempting login..."
           if [ -n "$GHCR_PAT" ] && [ -n "$GHCR_USER" ]; then
             echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-            echo "Logged in to GHCR."
+            echo "✅ Logged in to GHCR with PAT"
           else
-            echo "Skipping GHCR login (no GHCR_PAT/GHCR_USER provided)."
+            echo "⚠️  Using GITHUB_TOKEN as fallback..."
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo "✅ Logged in with GITHUB_TOKEN"
           fi
+
+          echo ""
+          echo "🧪 Testing pull access..."
+          docker pull ghcr.io/rock-academy/rock-front:latest || echo "❌ Pull test failed"
 
       - name: Deploy
         env:
-          FRONT_IMAGE: ghcr.io/${{ github.repository }}:latest
+          FRONT_IMAGE: ghcr.io/rock-academy/rock-front:latest
         run: |
           cd ~/rock-front
-          export NEXT_PUBLIC_BACKEND_BASE_URL=${{ secrets.NEXT_PUBLIC_BACKEND_BASE_URL }}
           docker compose -f docker-compose.front.prod.yaml pull
           docker compose -f docker-compose.front.prod.yaml up -d
           docker system prune -f

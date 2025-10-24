@@ -118,7 +118,7 @@ export const ProfileDialog = () => {
       </Button>
       <FullscreenDialog
         id="profile"
-        className="dash-gradient"
+        className="bg-[linear-gradient(5.65deg,#FFFFFF_53.76%,#FEE6F4_97.4%)]"
         onClose={() => setSelectedAvatar(null)}
       >
         <FullscreenDialog.Header>
