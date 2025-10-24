@@ -8,9 +8,7 @@ import {
 import Image from 'next/image';
 import { useRef } from 'react';
 import Autoplay from 'embla-carousel-autoplay';
-import { Input, InputWrapper } from '@/components/ui/input';
-import { DoorOpen, MenuIcon, SearchIcon } from 'lucide-react';
-import { ProfileDialog } from '@/components/shared/profile-dialog';
+import { DoorOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { EventsMenuIcon } from '@/components/icons/events-menu-icon';
 import { ClassesIcon } from '@/components/icons/classes-icon';
@@ -20,6 +18,7 @@ import { useOpen } from '@/hooks/use-open';
 import { useQueryState } from 'nuqs';
 import { ClassDetailDialog } from './classes/_components/class-detail-dialog';
 import { SalonDialog } from '@/components/shared/salon-dialog';
+import DashboardHeader from '@/components/layout/dashboard-header';
 
 export default function Page() {
   const plugin = useRef(Autoplay({ delay: 2500 }));
@@ -36,20 +35,7 @@ export default function Page() {
 
   return (
     <div className="mt-8 space-y-8">
-      <div className="container-main flex flex-row items-center justify-between gap-2.5">
-        <InputWrapper variant="lg">
-          <SearchIcon />
-          <Input
-            variant="lg"
-            placeholder="نام کلاس مورد نظر خود را جستجو کنید."
-          />
-        </InputWrapper>
-
-        <ProfileDialog />
-        <Button variant="dim" mode="icon">
-          <MenuIcon className="size-6 stroke-zinc-500" />
-        </Button>
-      </div>
+      <DashboardHeader />
       <Carousel opts={{ loop: true }} plugins={[plugin.current]}>
         <CarouselContent>
           {[1, 2, 3].map((item) => (
