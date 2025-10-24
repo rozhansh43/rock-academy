@@ -137,7 +137,7 @@ export default function Page() {
                     className={cn(
                       'border-light-1 text-dark-2 h-9.5 w-6.5 flex-col justify-self-center rounded-full border pt-1 text-[13px] font-medium',
                       Number(activeDate.slice(8, 10)) === day.jalali?.d &&
-                        'bg-light-orange hover:bg-light-orange/90',
+                      'bg-light-orange hover:bg-light-orange/90',
                     )}
                     onClick={() => {
                       const m = day.jalali?.m || 0;
@@ -153,7 +153,7 @@ export default function Page() {
                         'bg-light-orange invisible size-1 rounded-full',
                         !!day.total && 'visible',
                         Number(activeDate.slice(8, 10)) === day.jalali?.d &&
-                          'bg-orange',
+                        'bg-orange',
                       )}
                     />
                   </Button>
