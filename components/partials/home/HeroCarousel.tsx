@@ -52,7 +52,7 @@ export default function HeroCarousel({
       <Carousel
         opts={{ loop: true, align: 'start' }}
         plugins={[plugin.current]}
-        setApi={setApi} // <-- دریافت emblaApi
+        // setApi={setApi} // <-- دریافت emblaApi
       >
         <CarouselContent className="gap-1 px-1">
           {slides.map((s, i) => (
