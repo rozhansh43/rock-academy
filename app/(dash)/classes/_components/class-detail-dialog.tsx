@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { FullscreenDialog } from '@/components/ui/fullscreen-dialog';
+import { FullscreenDialog, useOpen } from '@/components/ui/fullscreen-dialog';
 import Image from 'next/image';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiCaller } from '@/apis/api-caller';
 import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/utils/strings';
@@ -10,7 +10,9 @@ import { Loader2Icon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 export const ClassDetailDialog: FC = () => {
+  const queryClient = useQueryClient();
   const [id, setId] = useQueryState('id');
+  const paymentDialog = useOpen('payment');
 
   const query = useQuery({
     enabled: !!id,
@@ -43,7 +45,7 @@ export const ClassDetailDialog: FC = () => {
     },
     {
       label: 'نام مربی',
-      value: '?',
+      value: data?.instructor || '-',
     },
     {
       label: 'تعداد جلسات',
@@ -108,6 +110,10 @@ export const ClassDetailDialog: FC = () => {
                 size="lg"
                 className="h-13 w-40 rounded-4xl text-lg font-semibold"
                 disabled={!data?.is_registration_active}
+                onClick={() => {
+                  queryClient.setQueryData(['payment-item'], () => data);
+                  paymentDialog.open();
+                }}
               >
                 ثبت نام
               </Button>

@@ -13,6 +13,7 @@ import { PaymentDialog } from '../shared/payment-dialog';
 import { ProfileDialog } from '../shared/profile-dialog';
 import { Button } from '../ui/button';
 import { MenuIcon } from 'lucide-react';
+import { useOpen } from '@/hooks/use-open';
 
 const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
@@ -80,6 +81,8 @@ const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   ];
   const index = navItems.findIndex((item) => item.href === pathname);
 
+  const paymentDialog = useOpen('payment');
+
   return (
     <div className="size-full bg-white">
       <div className="h-[calc(100%-80px)] w-full overflow-auto pb-20">
@@ -128,7 +131,7 @@ const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
             ))}
           </div>
         </nav>
-        <PaymentDialog />
+        {paymentDialog.isOpen && <PaymentDialog />}
       </div>
     </div>
   );
