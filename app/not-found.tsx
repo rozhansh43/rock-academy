@@ -1,7 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { Page } from '@/components/ui/page';
-import { PageContent } from '@/components/ui/page-content';
-import { PageFooter } from '@/components/ui/page-footer';
 import Link from 'next/link';
 
 const NotFoundIllustration = () => {
