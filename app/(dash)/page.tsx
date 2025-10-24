@@ -65,7 +65,6 @@ export default function Page() {
 
   return (
     <div className="mt-4 space-y-8">
-      <DashboardHeader />
 
       <HeroCarousel
         slides={[
@@ -73,7 +72,7 @@ export default function Page() {
           { src: '/images/b (2).png', alt: 'slide-2' },
           { src: '/images/b (3).png', alt: 'slide-3' },
         ]}
-        className="container-main pl-0"
+        className="container-main pl-0 "
       />
 
       <QuickActionsRow
@@ -81,6 +80,8 @@ export default function Page() {
         onOpenEvents={() => console.log('open events')}
         onOpenClasses={() => console.log('open classes')}
       />
+
+      <p className="text-md container-main font-bold">دوره های جدید</p>
 
       <ClassesList
         items={items}
@@ -94,5 +95,6 @@ export default function Page() {
       {/* سایدبار یک‌بار در روت رندر شود */}
       <SidebarDrawer userName="سارا اکبری" score={35} fromLeft />
     </div>
+
   );
 }

@@ -45,7 +45,6 @@ export default function ClassesList({
 
   return (
     <div className="container-main flex flex-col gap-4">
-      <p className="text-lg font-bold">دوره های جدید</p>
 
       {items.map((item, i) => {
         const theme = getTheme(item.accent ?? auto(i));
@@ -62,7 +61,7 @@ export default function ClassesList({
           >
             {/* right: texts */}
             <div className="min-w-0">
-              <h3 className="mb-1 truncate text-[15px] leading-6 font-extrabold text-zinc-700">
+              <h3 className="mb-1 truncate text-[15px] leading-6 font-extrabold text-middle-gray">
                 {item.persian_name}
               </h3>
               <p className="text-[12px] leading-6 text-zinc-500">

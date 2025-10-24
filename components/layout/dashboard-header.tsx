@@ -10,7 +10,7 @@ export default function DashboardHeader() {
   const toggle = useUIStore((s) => s.toggleSidebarDrawer);
 
   return (
-    <div className="container-main flex flex-row items-center justify-between gap-2.5">
+    <div className="container-main flex flex-row items-center justify-between gap-2.5 p-5">
       <InputWrapper variant="lg">
         <SearchIcon />
         <Input
