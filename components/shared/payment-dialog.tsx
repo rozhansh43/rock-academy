@@ -37,7 +37,7 @@ export const PaymentDialog: FC = () => {
           <span
             dir="ltr"
             className="w-fit"
-          >{`${itemData?.time_range?.from} - ${itemData?.time_range?.to}`}</span>
+          >{`${itemData?.time_range?.from || ''} - ${itemData?.time_range?.to || ''}`}</span>
         </div>
         <div className="text-lg font-semibold text-[#4E4E4E]">نوع پرداخت</div>
         <RadioGroup defaultValue="cash">
