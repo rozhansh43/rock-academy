@@ -14,6 +14,7 @@ import SidebarDrawer from './sidebar-drawer';
 import { ClassDetailDialog } from '@/app/(dash)/classes/_components/class-detail-dialog';
 import { SalonDialog } from '../shared/salon-dialog';
 import DashboardHeader from './dashboard-header';
+import { useOpen } from '@/hooks/use-open';
 
 const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
