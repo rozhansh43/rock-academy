@@ -14,7 +14,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="container-main size-full pt-6">
+    <div className="container-main mt-1">
       <div className="flex flex-row justify-between">
         {tabs.map((item) => (
           <div key={item.value} className="flex flex-col items-center gap-0.5">

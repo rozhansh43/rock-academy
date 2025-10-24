@@ -10,6 +10,9 @@ import { HomeIcon } from '../icons/home-icon';
 import { EventsMenuIcon } from '../icons/events-menu-icon';
 import { MoneyBagIcon } from '../icons/money-bag-icon';
 import { PaymentDialog } from '../shared/payment-dialog';
+import { ProfileDialog } from '../shared/profile-dialog';
+import { Button } from '../ui/button';
+import { MenuIcon } from 'lucide-react';
 
 const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
@@ -80,6 +83,13 @@ const DashboardLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="size-full bg-white">
       <div className="h-[calc(100%-80px)] w-full overflow-auto pb-20">
+        <div className="container-main flex flex-row items-center justify-between gap-2.5 pt-8 pb-4">
+          <div className="flex-1" />
+          <ProfileDialog />
+          <Button variant="dim" mode="icon">
+            <MenuIcon className="size-6 stroke-zinc-500" />
+          </Button>
+        </div>
         {children}
         <nav className="fixed bottom-9.5 flex h-19 w-[calc(100%-32px)] max-w-[calc(var(--container-md)-32px)] -translate-x-4 flex-row justify-center gap-10 rounded-full bg-linear-22 bg-gradient-to-tr from-white from-[14%] to-purple-100 to-[86%] px-1.5 shadow-[0px_1px_3px_0px] shadow-black/25">
           <div className="relative flex flex-row items-center justify-center gap-10">

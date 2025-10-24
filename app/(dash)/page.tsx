@@ -10,7 +10,6 @@ import { useRef } from 'react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Input, InputWrapper } from '@/components/ui/input';
 import { DoorOpen, MenuIcon, SearchIcon } from 'lucide-react';
-import { ProfileDialog } from '@/components/shared/profile-dialog';
 import { Button } from '@/components/ui/button';
 import { EventsMenuIcon } from '@/components/icons/events-menu-icon';
 import { ClassesIcon } from '@/components/icons/classes-icon';
@@ -35,8 +34,8 @@ export default function Page() {
   const salonDialog = useOpen('salon');
 
   return (
-    <div className="mt-8 space-y-8">
-      <div className="container-main flex flex-row items-center justify-between gap-2.5">
+    <div className="space-y-8">
+      <div className="container-main mx-0 -mt-14.5 w-[calc(100%-90px)]">
         <InputWrapper variant="lg">
           <SearchIcon />
           <Input
@@ -44,11 +43,6 @@ export default function Page() {
             placeholder="نام کلاس مورد نظر خود را جستجو کنید."
           />
         </InputWrapper>
-
-        <ProfileDialog />
-        <Button variant="dim" mode="icon">
-          <MenuIcon className="size-6 stroke-zinc-500" />
-        </Button>
       </div>
       <Carousel opts={{ loop: true }} plugins={[plugin.current]}>
         <CarouselContent>

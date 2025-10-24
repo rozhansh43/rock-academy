@@ -32,8 +32,8 @@ export default function Page() {
 
   return (
     <>
-      <div className="container-main pt-8">
-        <div className="flex flex-row items-center justify-between gap-2.5">
+      <div className="container-main">
+        <div className="-mt-14.5 w-[calc(100%-90px)]">
           <InputWrapper variant="lg">
             <SearchIcon />
             <Input
@@ -41,11 +41,6 @@ export default function Page() {
               placeholder="نام کلاس مورد نظر خود را جستجو کنید."
             />
           </InputWrapper>
-
-          <ProfileDialog />
-          <Button variant="dim" mode="icon">
-            <MenuIcon className="size-6 stroke-zinc-500" />
-          </Button>
         </div>
 
         <DropdownMenu>

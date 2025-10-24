@@ -5,6 +5,7 @@ import { ProfileDialog } from '@/components/shared/profile-dialog';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronRightIcon, ChevronLeftIcon, MenuIcon } from 'lucide-react';
+import Image from 'next/image';
 
 const weekdays = ['شنبه', '1شنبه', '2شنبه', '3شنبه', '4شنبه', '5شنبه', 'جمعه'];
 
@@ -574,23 +575,12 @@ export default function Page() {
 
   const query = useQuery({
     queryKey: ['events'],
-    queryFn: () => apiCaller.offerings.events.get(1, '', 'event'),
+    queryFn: () => apiCaller.offerings.events.get(1, '', undefined),
   });
   const data = (query.data as any)?.data as typeof query.data;
 
-  console.log(data);
-
   return (
-    <div className="container-main mt-8 space-y-8">
-      <div className="flex flex-row items-center justify-between gap-2.5">
-        <div className="flex-1" />
-
-        <ProfileDialog />
-        <Button variant="dim" mode="icon">
-          <MenuIcon className="size-6 stroke-zinc-500" />
-        </Button>
-      </div>
-
+    <div className="container-main space-y-8">
       <div className="flex w-full flex-col items-center justify-center gap-4 rounded-[30px] border border-[#DEDEDE] bg-white px-2 py-6">
         <div className="flex flex-row-reverse items-center justify-center gap-4">
           <Button
@@ -630,6 +620,59 @@ export default function Page() {
             </span>
           ))}
         </div>
+      </div>
+
+      <div className="mt-4.5 flex flex-col gap-4">
+        {query.isLoading ? (
+          <p className="text-dark-2 text-center text-base font-medium">
+            در حال بارگذاری...
+          </p>
+        ) : data?.results && data?.results?.length > 0 ? (
+          data?.results?.map((item) => (
+            <div key={item.id} className="rounded-[20px] bg-white p-3">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-dark-1 text-sm font-bold">
+                  {item.persian_name}
+                </h3>
+                <p className="text-[11px] leading-[14.7px] font-medium">
+                  <span className="text-light-1">مربی : </span>
+                  <span className="text-dark-3">{item?.instructor || '-'}</span>
+                </p>
+                <p className="text-[11px] leading-[14.7px] font-medium">
+                  <span className="text-light-1">روزهای برگزاری : </span>
+                  <span className="text-dark-3">
+                    {item.weekdays_fa?.join('، ') || '-'}
+                  </span>
+                </p>
+                <p className="text-[11px] leading-[14.7px] font-medium">
+                  <span className="text-light-1">بازه زمانی : </span>
+                  <span className="text-dark-3">
+                    {item.start_time?.replaceAll(':00', '')} -{' '}
+                    {item.end_time?.replaceAll(':00', '')}
+                  </span>
+                </p>
+                <div className="space-x-3">
+                  <Button
+                    size="sm"
+                    className="w-17"
+                    // @ts-ignore
+                    disabled={!item.is_registration_active}
+                  >
+                    ثبت نام
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={() => {}}>
+                    اطلاعات بیشتر
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="flex flex-col items-center gap-2">
+            <Image src="/images/no-data.png" width={200} height={200} alt="" />
+            <p className="text-dark-2">در این تاریخ هیچ دوره‌ای یافت نشد!</p>
+          </div>
+        )}
       </div>
     </div>
   );
