@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
+import { EmblaCarouselType } from 'embla-carousel';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -232,6 +233,69 @@ function CarouselNext({
   );
 }
 
+type UseDotButtonType = {
+  selectedIndex: number;
+  scrollSnaps: number[];
+  onDotButtonClick: (index: number) => void;
+};
+
+export const useDotButton = (): UseDotButtonType => {
+  const { api: emblaApi } = useCarousel();
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [scrollSnaps, setScrollSnaps] = React.useState<number[]>([]);
+
+  const onDotButtonClick = React.useCallback(
+    (index: number) => {
+      if (!emblaApi) return;
+      emblaApi.scrollTo(index);
+    },
+    [emblaApi],
+  );
+
+  const onInit = React.useCallback((emblaApi: EmblaCarouselType) => {
+    setScrollSnaps(emblaApi.scrollSnapList());
+  }, []);
+
+  const onSelect = React.useCallback((emblaApi: EmblaCarouselType) => {
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, []);
+
+  React.useEffect(() => {
+    if (!emblaApi) return;
+
+    onInit(emblaApi);
+    onSelect(emblaApi);
+    emblaApi.on('reInit', onInit).on('reInit', onSelect).on('select', onSelect);
+  }, [emblaApi, onInit, onSelect]);
+
+  return {
+    selectedIndex,
+    scrollSnaps,
+    onDotButtonClick,
+  };
+};
+
+type PropType = React.ComponentPropsWithRef<'button'>;
+const CarouselDotButtons: React.FC<PropType> = (props) => {
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton();
+
+  return (
+    <div className="flex items-center gap-2">
+      {scrollSnaps.map((_, index) => (
+        <button
+          key={index}
+          type="button"
+          onClick={() => onDotButtonClick(index)}
+          className={'bg-middle-gray size-2 rounded-full transition-all duration-300'.concat(
+            index === selectedIndex ? 'bg bg-primary h-2 w-4 rounded-full' : '',
+          )}
+          {...props}
+        />
+      ))}
+    </div>
+  );
+};
+
 export {
   type CarouselApi,
   Carousel,
@@ -239,4 +303,5 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselDotButtons,
 };
