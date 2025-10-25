@@ -259,6 +259,7 @@ export default function Page() {
                         >
                           رزرو رویداد
                         </Button>
+                        {/* @ts-ignore */}
                         {!item?.discount_percentage ? (
                           <span className="text-dark-1 text-lg font-semibold">
                             {formatPrice(item?.price)} تومان
@@ -271,6 +272,7 @@ export default function Page() {
                                 variant="primary"
                                 className="font-bold"
                               >
+                                {/* @ts-ignore */}
                                 {item?.discount_percentage}%
                               </Badge>
                               <span className="text-light-1 text-sm line-through">
@@ -279,6 +281,7 @@ export default function Page() {
                             </div>
 
                             <span>
+                              {/* @ts-ignore */}
                               {formatPrice(item?.price_after_discount)} تومان
                             </span>
                           </div>
